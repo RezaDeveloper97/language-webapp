@@ -78,17 +78,6 @@ body {
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ── Search bar — sticks to bottom of dynamic viewport (keyboard-aware) ── */
-.search-bar-wrap {
-  position: fixed;
-  left: 0; right: 0;
-  /* dvh updates live when the keyboard opens/closes on iOS */
-  top: calc(100dvh - 76px);
-  z-index: 100;
-  padding: 16px max(14px, env(safe-area-inset-left)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-right));
-  background: linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%);
-  pointer-events: none;
-}
 
 h1,
 h2 {
