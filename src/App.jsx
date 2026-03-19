@@ -47,13 +47,14 @@ export default function App() {
     });
   }, [activePairId]);
 
-  /* ── Scroll active tab into view ─────────────────────────────────── */
+  /* ── Scroll active tab into view + scroll page to top ────────────── */
   useEffect(() => {
     const btn = tabBtnRefs.current[activeCategory];
     if (!btn) return;
     // Small delay to avoid layout thrash during swipe animation
     const t = setTimeout(() => {
       btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }, 50);
     return () => clearTimeout(t);
   }, [activeCategory]);
@@ -177,7 +178,7 @@ export default function App() {
         justifyContent: "center",
         gap: 16,
         color: "#94a3b8",
-        fontFamily: "'Segoe UI', Tahoma, sans-serif",
+        fontFamily: "'Vazirmatn', 'Segoe UI', Tahoma, sans-serif",
       }}>
         <div style={{
           width: 40, height: 40,
@@ -197,7 +198,7 @@ export default function App() {
       minHeight: "100dvh",
       background: "#0f0f13",
       color: "#f1f1f5",
-      fontFamily: "'Segoe UI', Tahoma, sans-serif",
+      fontFamily: "'Vazirmatn', 'Segoe UI', Tahoma, sans-serif",
       direction: uiDir,
     }}>
 
