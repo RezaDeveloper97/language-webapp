@@ -23,71 +23,26 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [flipped, setFlipped]           = useState({});
   const [search, setSearch]             = useState("");
+  const [searchOpen, setSearchOpen]     = useState(false);
   const [swipeOffset, setSwipeOffset]   = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const cache = useRef({});  // loaded pairs keyed by id — avoids re-downloading
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
   const tabsRef = useRef(null);
   const tabBtnRefs = useRef({});
-  const searchBarRef = useRef(null);
+  const searchInputRef = useRef(null);
   const online = useOnline();
 
-  /* ── Keep search bar above virtual keyboard (GPU-accelerated) ──── */
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const el = searchBarRef.current;
-    if (!el) return;
-    const input = el.querySelector("input");
-    let rafId = null;
-    let keyboardOpen = false;
-    let lastOffset = 0;
+  /* Open search: called directly in click handler (iOS needs sync .focus()) */
+  const openSearch = useCallback(() => {
+    setSearchOpen(true);
+    // iOS requires focus() in the same call‑stack as the user gesture — no setTimeout
+    searchInputRef.current?.focus();
+  }, []);
 
-    const applyOffset = () => {
-      const offsetBottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      // Only update DOM when value actually changed
-      if (offsetBottom !== lastOffset) {
-        lastOffset = offsetBottom;
-        el.style.transform = `translateY(-${offsetBottom}px)`;
-      }
-    };
-
-    /* Continuous RAF loop while keyboard is open — catches scroll,
-       content reflow (search results changing), and any viewport drift */
-    const tick = () => {
-      if (!keyboardOpen) return;
-      applyOffset();
-      rafId = requestAnimationFrame(tick);
-    };
-
-    /* Also listen to viewport events as a belt-and-suspenders approach */
-    vv.addEventListener("resize", applyOffset);
-    vv.addEventListener("scroll", applyOffset);
-
-    const onFocus = () => {
-      keyboardOpen = true;
-      document.body.style.overflow = "hidden";
-      // Start the RAF loop
-      rafId = requestAnimationFrame(tick);
-    };
-
-    const onBlur = () => {
-      keyboardOpen = false;
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-      document.body.style.overflow = "";
-      lastOffset = 0;
-      el.style.transform = "translateY(0)";
-    };
-
-    if (input) { input.addEventListener("focus", onFocus); input.addEventListener("blur", onBlur); }
-
-    return () => {
-      vv.removeEventListener("resize", applyOffset);
-      vv.removeEventListener("scroll", applyOffset);
-      if (input) { input.removeEventListener("focus", onFocus); input.removeEventListener("blur", onBlur); }
-      if (rafId) cancelAnimationFrame(rafId);
-      document.body.style.overflow = "";
-    };
+  const closeSearch = useCallback(() => {
+    setSearchOpen(false);
+    setSearch("");
   }, []);
 
   /* Load pair data on demand */
@@ -421,35 +376,41 @@ export default function App() {
         </>
       )}
 
-      {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
-      <div ref={searchBarRef} className="search-bar-kb" style={{
-        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 100,
-        willChange: "transform",
-        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
-        paddingTop: 16,
+      {/* ── Top Search Bar (slides down from header) ───────────────────── */}
+      <div style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 150,
+        paddingTop: online
+          ? "calc(max(10px, env(safe-area-inset-top)) + 56px)"
+          : "calc(max(44px, calc(env(safe-area-inset-top) + 36px)) + 56px)",
         paddingLeft: "max(14px, env(safe-area-inset-left))",
         paddingRight: "max(14px, env(safe-area-inset-right))",
-        background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
-        pointerEvents: "none",
+        paddingBottom: 12,
+        transform: searchOpen ? "translateY(0)" : "translateY(-100%)",
+        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        willChange: "transform",
+        background: "linear-gradient(180deg, rgba(15,15,19,0.95) 60%, rgba(15,15,19,0.0) 100%)",
+        pointerEvents: searchOpen ? "auto" : "none",
       }}>
         <div style={{
           maxWidth: 480, margin: "0 auto",
-          background: "rgba(255,255,255,0.07)",
-          backdropFilter: "blur(40px) saturate(180%)",
-          WebkitBackdropFilter: "blur(40px) saturate(180%)",
-          borderRadius: 26,
-          border: "1px solid rgba(255,255,255,0.13)",
-          boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.18), inset 0 -0.5px 0 rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.45)",
+          background: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(24px) saturate(180%)",
+          WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          borderRadius: 9999,
+          border: "1px solid rgba(255,255,255,0.25)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3)",
           padding: 4,
-          pointerEvents: "auto",
+          display: "flex", alignItems: "center",
         }}>
           <input
+            ref={searchInputRef}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="🔍 جستجو..."
+            onBlur={closeSearch}
+            placeholder="جستجو..."
             style={{
-              width: "100%", padding: "12px 18px",
-              borderRadius: 22, border: "none",
+              flex: 1, padding: "12px 18px",
+              borderRadius: 9999, border: "none",
               background: "transparent",
               color: "#fff", fontSize: 15, outline: "none",
               textAlign: uiDir === "rtl" ? "right" : "left",
@@ -457,6 +418,68 @@ export default function App() {
               fontFamily: "inherit",
             }}
           />
+          {/* Close icon */}
+          <button
+            onMouseDown={(e) => { e.preventDefault(); closeSearch(); }}
+            style={{
+              width: 36, height: 36, borderRadius: "50%", border: "none",
+              background: "rgba(255,255,255,0.1)", color: "#94a3b8",
+              fontSize: 16, cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0, marginLeft: 4, marginRight: 4,
+            }}
+          >✕</button>
+        </div>
+      </div>
+
+      {/* ── Bottom Navigation Bar (Liquid Glass) ─────────────────────── */}
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
+        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
+        paddingTop: 8,
+        paddingLeft: "max(14px, env(safe-area-inset-left))",
+        paddingRight: "max(14px, env(safe-area-inset-right))",
+        background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
+        pointerEvents: "none",
+      }}>
+        <div style={{
+          maxWidth: 420, margin: "0 auto",
+          background: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(24px) saturate(180%)",
+          WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          borderRadius: 9999,
+          border: "1px solid rgba(255,255,255,0.25)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3)",
+          padding: "6px 8px",
+          display: "flex", alignItems: "center", justifyContent: "space-around",
+          pointerEvents: "auto",
+        }}>
+          {/* Home */}
+          <NavBtn icon="🏠" label="خانه" active />
+          {/* Explore */}
+          <NavBtn icon="🧭" label="کاوش" />
+          {/* Search — circular glass button */}
+          <button
+            onClick={openSearch}
+            style={{
+              width: 48, height: 48, borderRadius: "50%",
+              border: "1px solid rgba(255,255,255,0.25)",
+              background: "rgba(255,255,255,0.15)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3)",
+              color: "#fff", fontSize: 20, cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+              transform: searchOpen ? "scale(0.8)" : "scale(1)",
+              opacity: searchOpen ? 0 : 1,
+              transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease",
+            }}
+          >🔍</button>
+          {/* Bookmarks */}
+          <NavBtn icon="🔖" label="ذخیره" />
+          {/* Profile */}
+          <NavBtn icon="👤" label="پروفایل" />
         </div>
       </div>
     </div>
@@ -558,6 +581,21 @@ function PairPicker({ manifest, activePairId, onSelect, onClose }) {
         </div>
       </div>
     </>
+  );
+}
+
+/* ── NavBtn (bottom nav bar item) ──────────────────────────────────────────── */
+function NavBtn({ icon, label, active }) {
+  return (
+    <button style={{
+      display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+      padding: "6px 12px", border: "none", background: "transparent",
+      cursor: "pointer", color: active ? "#fff" : "#64748b",
+      fontSize: 10, fontFamily: "inherit",
+    }}>
+      <span style={{ fontSize: 20 }}>{icon}</span>
+      <span style={{ fontWeight: active ? 600 : 400 }}>{label}</span>
+    </button>
   );
 }
 
