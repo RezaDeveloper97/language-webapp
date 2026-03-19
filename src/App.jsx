@@ -29,43 +29,7 @@ export default function App() {
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
   const tabsRef = useRef(null);
   const tabBtnRefs = useRef({});
-  const searchBarRef = useRef(null);
   const online = useOnline();
-
-  /* ── Keep search bar above virtual keyboard (iOS PWA compatible) ── */
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-    let raf = 0;
-    const update = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const el = searchBarRef.current;
-        if (!el) return;
-        // iOS PWA: fixed elements stick to layout viewport, not visual viewport.
-        // We compute where the visual bottom actually is and translate the bar there.
-        const offsetTop = vv.offsetTop;          // how far page has scrolled up
-        const visibleH  = vv.height;             // visible height (minus keyboard)
-        const layoutH   = window.innerHeight;    // full layout viewport height
-        // How many px the keyboard covers from the bottom of the layout viewport:
-        const kb = layoutH - (offsetTop + visibleH);
-        if (kb > 50) {
-          el.style.transform = `translateY(${-kb}px)`;
-          el.style.paddingBottom = "6px";
-        } else {
-          el.style.transform = "translateY(0)";
-          el.style.paddingBottom = "max(10px, env(safe-area-inset-bottom))";
-        }
-      });
-    };
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-    return () => {
-      cancelAnimationFrame(raf);
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
-    };
-  }, []);
 
   /* Load pair data on demand */
   useEffect(() => {
@@ -399,18 +363,7 @@ export default function App() {
       )}
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
-      <div ref={searchBarRef} style={{
-        position: "fixed", left: 0, right: 0, zIndex: 100,
-        bottom: 0,
-        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
-        paddingTop: 16,
-        paddingLeft: "max(14px, env(safe-area-inset-left))",
-        paddingRight: "max(14px, env(safe-area-inset-right))",
-        background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
-        pointerEvents: "none",
-        willChange: "transform",
-        transform: "translateY(0)",
-      }}>
+      <div className="search-bar-wrap">
         <div style={{
           maxWidth: 480, margin: "0 auto",
           background: "rgba(255,255,255,0.07)",
