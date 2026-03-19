@@ -62,37 +62,13 @@ export default function App() {
     setPickerOpen(false);
   };
 
-  /* ── Loading screen ───────────────────────────────────────────────── */
-  if (loading || !pairData) {
-    return (
-      <div style={{
-        minHeight: "100dvh",
-        background: "#0f0f13",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 16,
-        color: "#94a3b8",
-        fontFamily: "'Segoe UI', Tahoma, sans-serif",
-      }}>
-        <div style={{
-          width: 40, height: 40,
-          border: "3px solid #ffffff15",
-          borderTopColor: "#6366f1",
-          borderRadius: "50%",
-          animation: "spin 0.8s linear infinite",
-        }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        <p style={{ margin: 0, fontSize: 14 }}>در حال بارگذاری...</p>
-      </div>
-    );
-  }
-
-  const { meta, categories } = pairData;
-  const activeCatId = activeCategory ?? categories[0]?.id;
-  const current     = categories.find((c) => c.id === activeCatId);
-  const uiDir       = meta.uiDir;
+  /* ── Derived data (safe defaults when loading) ───────────────────── */
+  const meta       = pairData?.meta;
+  const categories = pairData?.categories ?? [];
+  const uiDir      = meta?.uiDir ?? "rtl";
+  const activeCatId   = activeCategory ?? categories[0]?.id;
+  const current       = categories.find((c) => c.id === activeCatId) ?? null;
+  const activeCatIndex = categories.findIndex((c) => c.id === activeCatId);
 
   const filtered = search.trim()
     ? categories.flatMap((cat) =>
@@ -106,8 +82,6 @@ export default function App() {
           .map((p) => ({ ...p, catTitle: cat.title, catColor: cat.color, catIcon: cat.icon }))
       )
     : null;
-
-  const activeCatIndex = categories.findIndex((c) => c.id === activeCatId);
 
   /* ── Swipe handlers (RTL-aware) ──────────────────────────────────── */
   const SWIPE_THRESHOLD = 50;
@@ -187,6 +161,33 @@ export default function App() {
       setTimeout(() => setIsTransitioning(false), 280);
     }
   }, [swipeOffset, uiDir, activeCatIndex, categories, setActiveCategory, setFlipped]);
+
+  /* ── Loading screen ───────────────────────────────────────────────── */
+  if (loading || !pairData) {
+    return (
+      <div style={{
+        minHeight: "100dvh",
+        background: "#0f0f13",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 16,
+        color: "#94a3b8",
+        fontFamily: "'Segoe UI', Tahoma, sans-serif",
+      }}>
+        <div style={{
+          width: 40, height: 40,
+          border: "3px solid #ffffff15",
+          borderTopColor: "#6366f1",
+          borderRadius: "50%",
+          animation: "spin 0.8s linear infinite",
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <p style={{ margin: 0, fontSize: 14 }}>در حال بارگذاری...</p>
+      </div>
+    );
+  }
 
   return (
     <div style={{
