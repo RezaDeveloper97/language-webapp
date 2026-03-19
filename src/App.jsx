@@ -324,18 +324,18 @@ export default function App() {
               style={{
                 display: "flex",
                 direction: "ltr",
-                transform: `translateX(calc(-100% + ${swipeOffset}px))`,
+                transform: `translateX(calc(-100vw + ${swipeOffset}px))`,
                 transition: isTransitioning ? "transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1)" : "none",
                 willChange: swipeOffset !== 0 || isTransitioning ? "transform" : "auto",
               }}
             >
               {/* Left panel */}
-              <div style={{ minWidth: "100%", flexShrink: 0, direction: uiDir }}>
+              <div style={{ width: "100vw", flexShrink: 0, direction: uiDir }}>
                 {leftCat && <CategoryPanel cat={leftCat} />}
               </div>
 
               {/* Current panel */}
-              <div style={{ minWidth: "100%", flexShrink: 0, direction: uiDir }}>
+              <div style={{ width: "100vw", flexShrink: 0, direction: uiDir }}>
                 {current && (
                   <>
                     <div style={{ padding: "16px 14px", paddingBottom: "max(100px, calc(env(safe-area-inset-bottom) + 88px))" }}>
@@ -357,7 +357,7 @@ export default function App() {
               </div>
 
               {/* Right panel */}
-              <div style={{ minWidth: "100%", flexShrink: 0, direction: uiDir }}>
+              <div style={{ width: "100vw", flexShrink: 0, direction: uiDir }}>
                 {rightCat && <CategoryPanel cat={rightCat} />}
               </div>
             </div>
