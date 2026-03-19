@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { pairManifest, defaultPairId } from "./data/index.js";
 
 /* ── Offline hook ──────────────────────────────────────────────────────────── */
@@ -23,7 +23,12 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [flipped, setFlipped]           = useState({});
   const [search, setSearch]             = useState("");
+  const [swipeOffset, setSwipeOffset]   = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const cache = useRef({});  // loaded pairs keyed by id — avoids re-downloading
+  const touchRef = useRef({ startX: 0, startY: 0, locked: null });
+  const tabsRef = useRef(null);
+  const tabBtnRefs = useRef({});
   const online = useOnline();
 
   /* Load pair data on demand */
@@ -41,6 +46,12 @@ export default function App() {
       setLoading(false);
     });
   }, [activePairId]);
+
+  /* ── Scroll active tab into view ─────────────────────────────────── */
+  useEffect(() => {
+    const btn = tabBtnRefs.current[activeCategory];
+    if (btn) btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, [activeCategory]);
 
   const switchPair = (id) => {
     if (id === activePairId) { setPickerOpen(false); return; }
@@ -96,6 +107,87 @@ export default function App() {
       )
     : null;
 
+  const activeCatIndex = categories.findIndex((c) => c.id === activeCatId);
+
+  /* ── Swipe handlers (RTL-aware) ──────────────────────────────────── */
+  const SWIPE_THRESHOLD = 50;
+
+  const handleTouchStart = useCallback((e) => {
+    if (isTransitioning) return;
+    const t = e.touches[0];
+    touchRef.current = { startX: t.clientX, startY: t.clientY, locked: null };
+  }, [isTransitioning]);
+
+  const handleTouchMove = useCallback((e) => {
+    if (isTransitioning) return;
+    const ref = touchRef.current;
+    const t = e.touches[0];
+    const deltaX = t.clientX - ref.startX;
+    const deltaY = t.clientY - ref.startY;
+
+    if (ref.locked === null) {
+      if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 8) {
+        ref.locked = "v";
+        return;
+      }
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 8) {
+        ref.locked = "h";
+      } else return;
+    }
+    if (ref.locked === "v") return;
+
+    // RTL: positive deltaX = swipe right = previous tab
+    const dir = uiDir === "rtl" ? 1 : -1;
+    const goingPrev = deltaX * dir > 0;
+    const goingNext = deltaX * dir < 0;
+    const atFirst = activeCatIndex === 0;
+    const atLast = activeCatIndex === categories.length - 1;
+
+    let offset = deltaX;
+    if ((goingPrev && atFirst) || (goingNext && atLast)) {
+      offset = deltaX * 0.25; // rubber-band
+    }
+    setSwipeOffset(offset);
+  }, [isTransitioning, uiDir, activeCatIndex, categories.length]);
+
+  const handleTouchEnd = useCallback(() => {
+    const ref = touchRef.current;
+    if (ref.locked !== "h") { setSwipeOffset(0); return; }
+
+    const deltaX = swipeOffset;
+    const dir = uiDir === "rtl" ? 1 : -1;
+    const goingPrev = deltaX * dir > 0;
+    const goingNext = deltaX * dir < 0;
+    const atFirst = activeCatIndex === 0;
+    const atLast = activeCatIndex === categories.length - 1;
+
+    if (Math.abs(deltaX) > SWIPE_THRESHOLD && !((goingPrev && atFirst) || (goingNext && atLast))) {
+      const slideOut = goingPrev ? window.innerWidth : -window.innerWidth;
+      const newIndex = goingPrev ? activeCatIndex - 1 : activeCatIndex + 1;
+
+      setIsTransitioning(true);
+      setSwipeOffset(slideOut);
+
+      setTimeout(() => {
+        setActiveCategory(categories[newIndex].id);
+        setFlipped({});
+        setSwipeOffset(-slideOut); // position new content on opposite side
+        // Next frame: animate to center
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setSwipeOffset(0);
+            setTimeout(() => setIsTransitioning(false), 280);
+          });
+        });
+      }, 260);
+    } else {
+      // Snap back
+      setIsTransitioning(true);
+      setSwipeOffset(0);
+      setTimeout(() => setIsTransitioning(false), 280);
+    }
+  }, [swipeOffset, uiDir, activeCatIndex, categories, setActiveCategory, setFlipped]);
+
   return (
     <div style={{
       minHeight: "100dvh",
@@ -126,7 +218,7 @@ export default function App() {
         paddingTop: online
           ? "max(20px, env(safe-area-inset-top))"
           : "max(44px, calc(env(safe-area-inset-top) + 36px))",
-        paddingBottom: 16,
+        paddingBottom: 12,
         paddingLeft:  "max(20px, env(safe-area-inset-left))",
         paddingRight: "max(20px, env(safe-area-inset-right))",
         textAlign: "center",
@@ -166,28 +258,9 @@ export default function App() {
           <span style={{ fontSize: 10, color: "#64748b" }}>▾</span>
         </button>
 
-        <p style={{ margin: "0 0 12px", color: "#94a3b8", fontSize: 12 }}>
+        <p style={{ margin: 0, color: "#94a3b8", fontSize: 12 }}>
           {meta.description}
         </p>
-
-        {/* Search */}
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="🔍 جستجو..."
-          style={{
-            width: "100%", maxWidth: 400,
-            padding: "10px 14px", borderRadius: 22,
-            border: "1px solid rgba(255,255,255,0.15)",
-            background: "rgba(255,255,255,0.08)",
-            backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-            color: "#fff", fontSize: 14, outline: "none",
-            textAlign: uiDir === "rtl" ? "right" : "left",
-            boxSizing: "border-box",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-            transition: "border-color 0.2s",
-          }}
-        />
       </div>
 
       {/* ── Language Pair Picker (bottom sheet) ───────────────────────────── */}
@@ -202,7 +275,7 @@ export default function App() {
 
       {/* ── Search Results ────────────────────────────────────────────────── */}
       {filtered ? (
-        <div style={{ padding: "16px 16px", paddingBottom: "max(32px, calc(env(safe-area-inset-bottom) + 20px))" }}>
+        <div style={{ padding: "16px 16px", paddingBottom: "max(100px, calc(env(safe-area-inset-bottom) + 88px))" }}>
           <p style={{ color: "#94a3b8", fontSize: 13, marginBottom: 12 }}>
             {filtered.length} نتیجه پیدا شد
           </p>
@@ -215,13 +288,14 @@ export default function App() {
       ) : (
         <>
           {/* ── Category Tabs ──────────────────────────────────────────────── */}
-          <div style={{
+          <div ref={tabsRef} style={{
             display: "flex", gap: 8, padding: "14px 14px 0",
             overflowX: "auto", scrollbarWidth: "none",
           }}>
             {categories.map((cat) => (
               <button
                 key={cat.id}
+                ref={(el) => { tabBtnRefs.current[cat.id] = el; }}
                 onClick={() => { setActiveCategory(cat.id); setFlipped({}); }}
                 style={{
                   flexShrink: 0, padding: "8px 14px", borderRadius: 20, border: "none",
@@ -237,24 +311,75 @@ export default function App() {
             ))}
           </div>
 
-          {/* ── Phrase Cards ────────────────────────────────────────────────── */}
-          <div style={{ padding: "16px 14px", paddingBottom: "max(40px, calc(env(safe-area-inset-bottom) + 24px))" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {current.phrases.map((p, i) => (
-                <FlipCard
-                  key={i}
-                  p={p}
-                  color={current.color}
-                  isFlipped={!!flipped[`${activeCatId}-${i}`]}
-                  onToggle={() => setFlipped((prev) => ({ ...prev, [`${activeCatId}-${i}`]: !prev[`${activeCatId}-${i}`] }))}
-                />
-              ))}
+          {/* ── Swipeable Phrase Cards ──────────────────────────────────────── */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              transform: `translateX(${swipeOffset}px)`,
+              transition: isTransitioning ? "transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1)" : "none",
+              willChange: swipeOffset !== 0 ? "transform" : "auto",
+              touchAction: "pan-y",
+              overflow: "hidden",
+            }}
+          >
+            <div style={{ padding: "16px 14px", paddingBottom: "max(100px, calc(env(safe-area-inset-bottom) + 88px))" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {current.phrases.map((p, i) => (
+                  <FlipCard
+                    key={i}
+                    p={p}
+                    color={current.color}
+                    isFlipped={!!flipped[`${activeCatId}-${i}`]}
+                    onToggle={() => setFlipped((prev) => ({ ...prev, [`${activeCatId}-${i}`]: !prev[`${activeCatId}-${i}`] }))}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          {current.tip && <TipBox color={current.color} text={current.tip} />}
+            {current.tip && <TipBox color={current.color} text={current.tip} />}
+          </div>
         </>
       )}
+
+      {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
+        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
+        paddingTop: 16,
+        paddingLeft: "max(14px, env(safe-area-inset-left))",
+        paddingRight: "max(14px, env(safe-area-inset-right))",
+        background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
+        pointerEvents: "none",
+      }}>
+        <div style={{
+          maxWidth: 480, margin: "0 auto",
+          background: "rgba(255,255,255,0.07)",
+          backdropFilter: "blur(40px) saturate(180%)",
+          WebkitBackdropFilter: "blur(40px) saturate(180%)",
+          borderRadius: 26,
+          border: "1px solid rgba(255,255,255,0.13)",
+          boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.18), inset 0 -0.5px 0 rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.45)",
+          padding: 4,
+          pointerEvents: "auto",
+        }}>
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="🔍 جستجو..."
+            style={{
+              width: "100%", padding: "12px 18px",
+              borderRadius: 22, border: "none",
+              background: "transparent",
+              color: "#fff", fontSize: 15, outline: "none",
+              textAlign: uiDir === "rtl" ? "right" : "left",
+              boxSizing: "border-box",
+              fontFamily: "inherit",
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
