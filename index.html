@@ -1,10 +1,68 @@
 <!doctype html>
-<html lang="en">
+<html lang="fa" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>malaysia-english</title>
+
+    <!-- ── Viewport: viewport-fit=cover for iOS Liquid Glass / notch ── -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- ── Primary ──────────────────────────────────────────────────── -->
+    <title>انگلیسی سفر مالزی 🇲🇾</title>
+    <meta name="description" content="عبارات کاربردی انگلیسی برای سفر به مالزی — آفلاین کار می‌کند" />
+    <meta name="theme-color" content="#010066" />
+
+    <!-- ── Favicon / PWA icons ──────────────────────────────────────── -->
+    <link rel="icon"             type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="manifest"                              href="%BASE_URL%manifest.webmanifest" />
+
+    <!-- ── iOS PWA: core ────────────────────────────────────────────── -->
+    <meta name="apple-mobile-web-app-capable"          content="yes" />
+    <!-- black-translucent → content extends under status bar = Liquid Glass -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title"            content="مالزی" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+
+    <!-- ── iOS splash screens (portrait) ───────────────────────────── -->
+    <!-- iPhone 16 Pro Max  440×956 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1320-2868.png"
+          media="screen and (device-width:440px) and (device-height:956px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone 16 Pro  402×874 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1206-2622.png"
+          media="screen and (device-width:402px) and (device-height:874px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone 16 Plus / 15 Pro Max / 15 Plus / 14 Pro Max  430×932 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1290-2796.png"
+          media="screen and (device-width:430px) and (device-height:932px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone 16 / 15 Pro / 15  393×852 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1179-2556.png"
+          media="screen and (device-width:393px) and (device-height:852px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone 14 / 13 Pro / 13 / 12  390×844 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1170-2532.png"
+          media="screen and (device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone 14 Plus / 13 Pro Max / 12 Pro Max  428×926 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1284-2778.png"
+          media="screen and (device-width:428px) and (device-height:926px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone 13 mini / 12 mini  375×812 @3× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1125-2436.png"
+          media="screen and (device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)"/>
+    <!-- iPhone SE 3rd gen  375×667 @2× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-750-1334.png"
+          media="screen and (device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)"/>
+    <!-- iPad Pro 12.9"  1024×1366 @2× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-2048-2732.png"
+          media="screen and (device-width:1024px) and (device-height:1366px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)"/>
+    <!-- iPad Pro 11"  834×1194 @2× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1668-2388.png"
+          media="screen and (device-width:834px) and (device-height:1194px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)"/>
+    <!-- iPad Air / iPad 10th  820×1180 @2× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1640-2360.png"
+          media="screen and (device-width:820px) and (device-height:1180px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)"/>
+    <!-- iPad mini 6th  744×1133 @2× -->
+    <link rel="apple-touch-startup-image" href="%BASE_URL%splash/apple-splash-1488-2266.png"
+          media="screen and (device-width:744px) and (device-height:1133px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)"/>
+
+    <!-- ── Mobile / OG extras ───────────────────────────────────────── -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
   </head>
   <body>
     <div id="root"></div>
