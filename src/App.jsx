@@ -25,11 +25,25 @@ export default function App() {
   const [search, setSearch]             = useState("");
   const [swipeOffset, setSwipeOffset]   = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [kbBottom, setKbBottom]         = useState(0);   // px above viewport bottom when keyboard is open
   const cache = useRef({});  // loaded pairs keyed by id — avoids re-downloading
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
   const tabsRef = useRef(null);
   const tabBtnRefs = useRef({});
   const online = useOnline();
+
+  /* ── Keep search bar above virtual keyboard ──────────────────────── */
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const diff = window.innerHeight - vv.height;
+      setKbBottom(diff > 50 ? diff : 0);       // >50 px = keyboard is showing
+    };
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => { vv.removeEventListener("resize", update); vv.removeEventListener("scroll", update); };
+  }, []);
 
   /* Load pair data on demand */
   useEffect(() => {
@@ -221,12 +235,14 @@ export default function App() {
       <div style={{
         position: "sticky", top: 0, zIndex: 100,
         paddingTop: online
-          ? "max(20px, env(safe-area-inset-top))"
+          ? "max(10px, env(safe-area-inset-top))"
           : "max(44px, calc(env(safe-area-inset-top) + 36px))",
-        paddingBottom: 12,
-        paddingLeft:  "max(20px, env(safe-area-inset-left))",
-        paddingRight: "max(20px, env(safe-area-inset-right))",
-        textAlign: "center",
+        paddingBottom: 10,
+        paddingLeft:  "max(16px, env(safe-area-inset-left))",
+        paddingRight: "max(16px, env(safe-area-inset-right))",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         backdropFilter: "blur(24px) saturate(200%) brightness(0.9)",
         WebkitBackdropFilter: "blur(24px) saturate(200%) brightness(0.9)",
         background: "rgba(10, 12, 24, 0.72)",
@@ -235,35 +251,29 @@ export default function App() {
         transition: "padding-top 0.3s ease",
       }}>
 
-        {/* Language switcher button */}
+        {/* Flags (left side) */}
         <button
           onClick={() => setPickerOpen(true)}
           style={{
-            display: "inline-flex",
+            display: "flex",
             alignItems: "center",
-            gap: 8,
-            padding: "7px 14px",
-            borderRadius: 20,
+            gap: 6,
+            padding: "6px 10px",
+            borderRadius: 16,
             border: "1px solid rgba(255,255,255,0.18)",
             background: "rgba(255,255,255,0.08)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            color: "#e2e8f0",
-            fontSize: 14,
-            fontWeight: 600,
             cursor: "pointer",
-            marginBottom: 10,
-            letterSpacing: 0.2,
+            flexShrink: 0,
           }}
         >
-          <span style={{ fontSize: 18 }}>{meta.sourceLang.flag}</span>
-          <span style={{ fontSize: 12, color: "#94a3b8" }}>→</span>
-          <span style={{ fontSize: 18 }}>{meta.targetLang.flag}</span>
-          <span>{meta.name}</span>
-          <span style={{ fontSize: 10, color: "#64748b" }}>▾</span>
+          <span style={{ fontSize: 20 }}>{meta.sourceLang.flag}</span>
+          <span style={{ fontSize: 11, color: "#64748b" }}>⇄</span>
+          <span style={{ fontSize: 20 }}>{meta.targetLang.flag}</span>
+          <span style={{ fontSize: 9, color: "#64748b" }}>▾</span>
         </button>
 
-        <p style={{ margin: 0, color: "#94a3b8", fontSize: 12 }}>
+        {/* Description (right side) */}
+        <p style={{ margin: 0, color: "#94a3b8", fontSize: 12, fontWeight: 500 }}>
           {meta.description}
         </p>
       </div>
@@ -368,13 +378,15 @@ export default function App() {
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
       <div style={{
-        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
-        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
+        position: "fixed", left: 0, right: 0, zIndex: 100,
+        bottom: kbBottom,
+        paddingBottom: kbBottom > 0 ? 6 : "max(10px, env(safe-area-inset-bottom))",
         paddingTop: 16,
         paddingLeft: "max(14px, env(safe-area-inset-left))",
         paddingRight: "max(14px, env(safe-area-inset-right))",
         background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
         pointerEvents: "none",
+        transition: "bottom 0.15s ease-out",
       }}>
         <div style={{
           maxWidth: 480, margin: "0 auto",
