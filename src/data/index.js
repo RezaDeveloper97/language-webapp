@@ -1,47 +1,32 @@
 /**
- * Top-level language-pair registry
+ * Language-pair manifest
  *
- * To add a new language pair (e.g. Persian → Hindi):
- * 1. Create  src/data/pairs/fa-hi/
- *            ├── meta.json          (id, name, uiDir, sourceLang, targetLang)
- *            ├── index.js           (imports meta + category files, exports default)
- *            └── categories/
- *                └── <id>.json      (id, icon, title, color, tip, phrases[{source,target,pronounce}])
- * 2. Import the pair below and add it to the `pairs` array
+ * Only meta.json files are imported here (tiny — no phrase data).
+ * The actual category data is loaded ON DEMAND via dynamic import()
+ * so each pair becomes a separate JS chunk and is NOT downloaded
+ * until the user selects it.
  *
- * ─── Phrase JSON schema ──────────────────────────────────────────────────────
- * {
- *   "id":      string           — unique slug
- *   "icon":    string           — emoji
- *   "title":   string           — display name in the UI language
- *   "color":   string           — hex color
- *   "tip":     string | null    — optional tip shown below the phrase list
- *   "phrases": Array<{
- *     "source":    string       — phrase in source language
- *     "target":    string       — phrase in target language
- *     "pronounce": string       — pronunciation written in source script
- *   }>
- * }
- *
- * ─── meta.json schema ────────────────────────────────────────────────────────
- * {
- *   "id":          string       — e.g. "fa-en"
- *   "name":        string       — display label, e.g. "فارسی ← انگلیسی"
- *   "description": string       — short subtitle shown in the pair picker
- *   "uiDir":       "rtl"|"ltr" — overall page direction
- *   "sourceLang":  { "code", "name", "flag" }
- *   "targetLang":  { "code", "name", "flag" }
- * }
+ * ── To add a new pair ────────────────────────────────────────────────────────
+ * 1. Create src/data/pairs/<id>/  with meta.json, index.js, categories/
+ * 2. import its meta below
+ * 3. Add an entry to pairManifest
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import faEn from './pairs/fa-en/index.js';
-// import faHi from './pairs/fa-hi/index.js';   ← uncomment when ready
-// import enFa from './pairs/en-fa/index.js';
+import faEnMeta from './pairs/fa-en/meta.json';
+// import faHiMeta from './pairs/fa-hi/meta.json';
+// import enFaMeta from './pairs/en-fa/meta.json';
 
-export const pairs = [
-  faEn,
-  // faHi,
-  // enFa,
+export const pairManifest = [
+  {
+    meta: faEnMeta,
+    // Dynamic import → Vite bundles this pair into its own chunk
+    load: () => import('./pairs/fa-en/index.js'),
+  },
+  // {
+  //   meta: faHiMeta,
+  //   load: () => import('./pairs/fa-hi/index.js'),
+  // },
 ];
 
 export const defaultPairId = 'fa-en';
