@@ -38,27 +38,48 @@ export default function App() {
     if (!vv) return;
     const el = searchBarRef.current;
     if (!el) return;
+    const input = el.querySelector("input");
+    const isPWA = window.matchMedia("(display-mode: standalone)").matches;
+    let pollTimer = null;
 
-    const update = () => {
+    const applyOffset = () => {
       const offsetBottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
       el.style.transform = `translateY(-${offsetBottom}px)`;
     };
 
-    const onFocus = () => { document.body.style.overflow = "hidden"; };
+    /* iOS PWA fires scroll instead of resize sometimes — listen to both */
+    vv.addEventListener("resize", applyOffset);
+    vv.addEventListener("scroll", applyOffset);
+
+    const onFocus = () => {
+      document.body.style.overflow = "hidden";
+      /* Polling fallback for iOS PWA: keyboard may open with delay */
+      if (isPWA) {
+        let elapsed = 0;
+        pollTimer = setInterval(() => {
+          elapsed += 50;
+          applyOffset();
+          if (window.innerHeight - vv.height > 100 || elapsed >= 1000) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+          }
+        }, 50);
+      }
+    };
+
     const onBlur = () => {
+      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
       document.body.style.overflow = "";
       el.style.transform = "translateY(0)";
     };
 
-    const input = el.querySelector("input");
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
     if (input) { input.addEventListener("focus", onFocus); input.addEventListener("blur", onBlur); }
 
     return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
+      vv.removeEventListener("resize", applyOffset);
+      vv.removeEventListener("scroll", applyOffset);
       if (input) { input.removeEventListener("focus", onFocus); input.removeEventListener("blur", onBlur); }
+      if (pollTimer) clearInterval(pollTimer);
       document.body.style.overflow = "";
     };
   }, []);
@@ -395,7 +416,7 @@ export default function App() {
       )}
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
-      <div ref={searchBarRef} style={{
+      <div ref={searchBarRef} className="search-bar-kb" style={{
         position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 100,
         willChange: "transform",
         paddingBottom: "max(10px, env(safe-area-inset-bottom))",

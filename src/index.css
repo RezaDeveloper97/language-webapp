@@ -122,3 +122,10 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* ── CSS fallback for keyboard-aware search bar (iOS 16+) ── */
+@supports (padding-bottom: env(keyboard-inset-height, 0px)) {
+  .search-bar-kb {
+    padding-bottom: calc(env(keyboard-inset-height, 0px) + max(10px, env(safe-area-inset-bottom))) !important;
+  }
+}
