@@ -25,20 +25,24 @@ export default function App() {
   const [search, setSearch]             = useState("");
   const [swipeOffset, setSwipeOffset]   = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [kbBottom, setKbBottom]         = useState(0);   // px above viewport bottom when keyboard is open
   const cache = useRef({});  // loaded pairs keyed by id — avoids re-downloading
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
   const tabsRef = useRef(null);
   const tabBtnRefs = useRef({});
+  const searchBarRef = useRef(null);
   const online = useOnline();
 
-  /* ── Keep search bar above virtual keyboard ──────────────────────── */
+  /* ── Keep search bar above virtual keyboard (direct DOM for zero lag) ── */
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
     const update = () => {
-      const diff = window.innerHeight - vv.height;
-      setKbBottom(diff > 50 ? diff : 0);       // >50 px = keyboard is showing
+      const el = searchBarRef.current;
+      if (!el) return;
+      const diff = window.innerHeight - vv.height - vv.offsetTop;
+      const kb = diff > 50 ? diff : 0;
+      el.style.bottom = kb + "px";
+      el.style.paddingBottom = kb > 0 ? "6px" : "max(10px, env(safe-area-inset-bottom))";
     };
     vv.addEventListener("resize", update);
     vv.addEventListener("scroll", update);
@@ -377,16 +381,15 @@ export default function App() {
       )}
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
-      <div style={{
+      <div ref={searchBarRef} style={{
         position: "fixed", left: 0, right: 0, zIndex: 100,
-        bottom: kbBottom,
-        paddingBottom: kbBottom > 0 ? 6 : "max(10px, env(safe-area-inset-bottom))",
+        bottom: 0,
+        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
         paddingTop: 16,
         paddingLeft: "max(14px, env(safe-area-inset-left))",
         paddingRight: "max(14px, env(safe-area-inset-right))",
         background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
         pointerEvents: "none",
-        transition: "bottom 0.15s ease-out",
       }}>
         <div style={{
           maxWidth: 480, margin: "0 auto",
