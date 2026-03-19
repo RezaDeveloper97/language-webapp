@@ -50,7 +50,12 @@ export default function App() {
   /* ── Scroll active tab into view ─────────────────────────────────── */
   useEffect(() => {
     const btn = tabBtnRefs.current[activeCategory];
-    if (btn) btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    if (!btn) return;
+    // Small delay to avoid layout thrash during swipe animation
+    const t = setTimeout(() => {
+      btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }, 50);
+    return () => clearTimeout(t);
   }, [activeCategory]);
 
   const switchPair = (id) => {
@@ -70,6 +75,15 @@ export default function App() {
   const current       = categories.find((c) => c.id === activeCatId) ?? null;
   const activeCatIndex = categories.findIndex((c) => c.id === activeCatId);
 
+  // Adjacent panels for side-by-side swipe (Telegram-style)
+  // "left/right" = visual position in the hidden strip, independent of RTL
+  const leftCat = uiDir === "rtl"
+    ? (activeCatIndex < categories.length - 1 ? categories[activeCatIndex + 1] : null)
+    : (activeCatIndex > 0 ? categories[activeCatIndex - 1] : null);
+  const rightCat = uiDir === "rtl"
+    ? (activeCatIndex > 0 ? categories[activeCatIndex - 1] : null)
+    : (activeCatIndex < categories.length - 1 ? categories[activeCatIndex + 1] : null);
+
   const filtered = search.trim()
     ? categories.flatMap((cat) =>
         cat.phrases
@@ -83,7 +97,7 @@ export default function App() {
       )
     : null;
 
-  /* ── Swipe handlers (RTL-aware) ──────────────────────────────────── */
+  /* ── Swipe handlers ────────────────────────────────────────────── */
   const SWIPE_THRESHOLD = 50;
 
   const handleTouchStart = useCallback((e) => {
@@ -110,60 +124,46 @@ export default function App() {
     }
     if (ref.locked === "v") return;
 
-    const dir = uiDir === "rtl" ? -1 : 1;
-    const goingPrev = deltaX * dir > 0;
-    const goingNext = deltaX * dir < 0;
-    const atFirst = activeCatIndex === 0;
-    const atLast = activeCatIndex === categories.length - 1;
-
     let offset = deltaX;
-    if ((goingPrev && atFirst) || (goingNext && atLast)) {
-      offset = deltaX * 0.25; // rubber-band
-    }
+    // Rubber band when no adjacent panel
+    if (deltaX > 0 && !leftCat) offset = deltaX * 0.25;
+    if (deltaX < 0 && !rightCat) offset = deltaX * 0.25;
     setSwipeOffset(offset);
-  }, [isTransitioning, uiDir, activeCatIndex, categories.length]);
+  }, [isTransitioning, leftCat, rightCat]);
 
   const handleTouchEnd = useCallback(() => {
     const ref = touchRef.current;
     if (ref.locked !== "h") { setSwipeOffset(0); return; }
 
     const deltaX = swipeOffset;
-    const dir = uiDir === "rtl" ? -1 : 1;
-    const goingPrev = deltaX * dir > 0;
-    const goingNext = deltaX * dir < 0;
-    const atFirst = activeCatIndex === 0;
-    const atLast = activeCatIndex === categories.length - 1;
 
-    if (Math.abs(deltaX) > SWIPE_THRESHOLD && !((goingPrev && atFirst) || (goingNext && atLast))) {
-      const slideOut = goingPrev ? window.innerWidth : -window.innerWidth;
-      const newIndex = goingPrev ? activeCatIndex - 1 : activeCatIndex + 1;
-
+    if (deltaX > SWIPE_THRESHOLD && leftCat) {
+      // Swiped right → reveal left panel
       setIsTransitioning(true);
-      setSwipeOffset(slideOut);
-
+      setSwipeOffset(window.innerWidth);
       setTimeout(() => {
-        // Turn off transition so the jump to opposite side is instant
-        setIsTransitioning(false);
-        setActiveCategory(categories[newIndex].id);
+        setActiveCategory(leftCat.id);
         setFlipped({});
-        setSwipeOffset(-slideOut); // position new content on opposite side
-
-        // Next frame: re-enable transition and animate to center
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setIsTransitioning(true);
-            setSwipeOffset(0);
-            setTimeout(() => setIsTransitioning(false), 280);
-          });
-        });
-      }, 260);
+        setSwipeOffset(0);
+        setIsTransitioning(false);
+      }, 280);
+    } else if (deltaX < -SWIPE_THRESHOLD && rightCat) {
+      // Swiped left → reveal right panel
+      setIsTransitioning(true);
+      setSwipeOffset(-window.innerWidth);
+      setTimeout(() => {
+        setActiveCategory(rightCat.id);
+        setFlipped({});
+        setSwipeOffset(0);
+        setIsTransitioning(false);
+      }, 280);
     } else {
       // Snap back
       setIsTransitioning(true);
       setSwipeOffset(0);
       setTimeout(() => setIsTransitioning(false), 280);
     }
-  }, [swipeOffset, uiDir, activeCatIndex, categories, setActiveCategory, setFlipped]);
+  }, [swipeOffset, leftCat, rightCat, setActiveCategory, setFlipped]);
 
   /* ── Loading screen ───────────────────────────────────────────────── */
   if (loading || !pairData) {
@@ -315,34 +315,52 @@ export default function App() {
             ))}
           </div>
 
-          {/* ── Swipeable Phrase Cards ──────────────────────────────────────── */}
-          <div
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            style={{
-              transform: `translateX(${swipeOffset}px)`,
-              transition: isTransitioning ? "transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1)" : "none",
-              willChange: swipeOffset !== 0 ? "transform" : "auto",
-              touchAction: "pan-y",
-              overflow: "hidden",
-            }}
-          >
-            <div style={{ padding: "16px 14px", paddingBottom: "max(100px, calc(env(safe-area-inset-bottom) + 88px))" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {current.phrases.map((p, i) => (
-                  <FlipCard
-                    key={i}
-                    p={p}
-                    color={current.color}
-                    isFlipped={!!flipped[`${activeCatId}-${i}`]}
-                    onToggle={() => setFlipped((prev) => ({ ...prev, [`${activeCatId}-${i}`]: !prev[`${activeCatId}-${i}`] }))}
-                  />
-                ))}
+          {/* ── Swipeable Panels (side-by-side like Telegram) ──────────────── */}
+          <div style={{ overflowX: "clip", touchAction: "pan-y" }}>
+            <div
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{
+                display: "flex",
+                direction: "ltr",
+                transform: `translateX(calc(-100% + ${swipeOffset}px))`,
+                transition: isTransitioning ? "transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1)" : "none",
+                willChange: swipeOffset !== 0 || isTransitioning ? "transform" : "auto",
+              }}
+            >
+              {/* Left panel */}
+              <div style={{ minWidth: "100%", flexShrink: 0, direction: uiDir }}>
+                {leftCat && <CategoryPanel cat={leftCat} />}
+              </div>
+
+              {/* Current panel */}
+              <div style={{ minWidth: "100%", flexShrink: 0, direction: uiDir }}>
+                {current && (
+                  <>
+                    <div style={{ padding: "16px 14px", paddingBottom: "max(100px, calc(env(safe-area-inset-bottom) + 88px))" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                        {current.phrases.map((p, i) => (
+                          <FlipCard
+                            key={i}
+                            p={p}
+                            color={current.color}
+                            isFlipped={!!flipped[`${activeCatId}-${i}`]}
+                            onToggle={() => setFlipped((prev) => ({ ...prev, [`${activeCatId}-${i}`]: !prev[`${activeCatId}-${i}`] }))}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    {current.tip && <TipBox color={current.color} text={current.tip} />}
+                  </>
+                )}
+              </div>
+
+              {/* Right panel */}
+              <div style={{ minWidth: "100%", flexShrink: 0, direction: uiDir }}>
+                {rightCat && <CategoryPanel cat={rightCat} />}
               </div>
             </div>
-
-            {current.tip && <TipBox color={current.color} text={current.tip} />}
           </div>
         </>
       )}
@@ -482,6 +500,22 @@ function PairPicker({ manifest, activePairId, onSelect, onClose }) {
           })}
         </div>
       </div>
+    </>
+  );
+}
+
+/* ── CategoryPanel (read-only, for adjacent swipe panels) ──────────────────── */
+function CategoryPanel({ cat }) {
+  return (
+    <>
+      <div style={{ padding: "16px 14px", paddingBottom: "max(100px, calc(env(safe-area-inset-bottom) + 88px))" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {cat.phrases.map((p, i) => (
+            <FlipCard key={i} p={p} color={cat.color} isFlipped={false} onToggle={() => {}} />
+          ))}
+        </div>
+      </div>
+      {cat.tip && <TipBox color={cat.color} text={cat.tip} />}
     </>
   );
 }
