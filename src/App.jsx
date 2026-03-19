@@ -269,7 +269,12 @@ export default function App() {
         transition: "padding-top 0.3s ease",
       }}>
 
-        {/* Flags (left side) */}
+        {/* Description (right side in RTL) */}
+        <p style={{ margin: 0, color: "#94a3b8", fontSize: 12, fontWeight: 500 }}>
+          {meta.description}
+        </p>
+
+        {/* Flags (left side in RTL) */}
         <button
           onClick={() => setPickerOpen(true)}
           style={{
@@ -289,11 +294,6 @@ export default function App() {
           <span style={{ fontSize: 20 }}>{meta.targetLang.flag}</span>
           <span style={{ fontSize: 9, color: "#64748b" }}>▾</span>
         </button>
-
-        {/* Description (right side) */}
-        <p style={{ margin: 0, color: "#94a3b8", fontSize: 12, fontWeight: 500 }}>
-          {meta.description}
-        </p>
       </div>
 
       {/* ── Language Pair Picker (bottom sheet) ───────────────────────────── */}
