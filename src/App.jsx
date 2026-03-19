@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, forwardRef } from "react";
 import { pairManifest, defaultPairId } from "./data/index.js";
+import { WifiOff, ArrowLeftRight, ChevronDown, X, Home, Compass, Search, Bookmark, User, ArrowRight, Check, Eye } from "lucide-react";
 
 /* ── Offline hook ──────────────────────────────────────────────────────────── */
 function useOnline() {
@@ -245,7 +246,7 @@ export default function App() {
           letterSpacing: 0.3,
           boxShadow: "0 2px 12px rgba(220,38,38,0.5)",
         }}>
-          📵 آفلاین هستید — اطلاعات از حافظه بارگذاری شد
+          <WifiOff size={16} style={{ verticalAlign: "middle", marginLeft: 6 }} /> آفلاین هستید — اطلاعات از حافظه بارگذاری شد
         </div>
       )}
 
@@ -290,9 +291,9 @@ export default function App() {
           }}
         >
           <span style={{ fontSize: 20 }}>{meta.sourceLang.flag}</span>
-          <span style={{ fontSize: 11, color: "#64748b" }}>⇄</span>
+          <ArrowLeftRight size={14} color="#64748b" />
           <span style={{ fontSize: 20 }}>{meta.targetLang.flag}</span>
-          <span style={{ fontSize: 9, color: "#64748b" }}>▾</span>
+          <ChevronDown size={12} color="#64748b" />
         </button>
       </div>
 
@@ -448,7 +449,7 @@ export default function App() {
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0, marginLeft: 4, marginRight: 4,
             }}
-          >✕</button>
+          ><X size={18} /></button>
         </div>
       </div>
 
@@ -475,9 +476,9 @@ export default function App() {
           pointerEvents: "auto",
         }}>
           {/* Home */}
-          <NavBtn icon="🏠" label="خانه" active />
+          <NavBtn icon={<Home size={20} />} label="خانه" active />
           {/* Explore */}
-          <NavBtn icon="🧭" label="کاوش" />
+          <NavBtn icon={<Compass size={20} />} label="کاوش" />
           {/* Search — circular glass button */}
           <button
             onClick={openSearch}
@@ -495,11 +496,11 @@ export default function App() {
               opacity: searchOpen ? 0 : 1,
               transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease",
             }}
-          >🔍</button>
+          ><Search size={22} /></button>
           {/* Bookmarks */}
-          <NavBtn icon="🔖" label="ذخیره" />
+          <NavBtn icon={<Bookmark size={20} />} label="ذخیره" />
           {/* Profile */}
-          <NavBtn icon="👤" label="پروفایل" />
+          <NavBtn icon={<User size={20} />} label="پروفایل" />
         </div>
       </div>
     </div>
@@ -568,7 +569,7 @@ function PairPicker({ manifest, activePairId, onSelect, onClose }) {
               >
                 {/* Flags */}
                 <span style={{ fontSize: 28, lineHeight: 1 }}>{meta.sourceLang.flag}</span>
-                <span style={{ fontSize: 14, color: "#475569" }}>→</span>
+                <ArrowRight size={16} color="#475569" />
                 <span style={{ fontSize: 28, lineHeight: 1 }}>{meta.targetLang.flag}</span>
 
                 {/* Text */}
@@ -592,7 +593,7 @@ function PairPicker({ manifest, activePairId, onSelect, onClose }) {
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 12, flexShrink: 0,
                   }}>
-                    ✓
+                    <Check size={14} />
                   </div>
                 )}
               </button>
@@ -613,7 +614,7 @@ function NavBtn({ icon, label, active }) {
       cursor: "pointer", color: active ? "#fff" : "#64748b",
       fontSize: 10, fontFamily: "inherit",
     }}>
-      <span style={{ fontSize: 20 }}>{icon}</span>
+      <span style={{ fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>
       <span style={{ fontWeight: active ? 600 : 400 }}>{label}</span>
     </button>
   );
@@ -675,7 +676,7 @@ const FlipCard = forwardRef(function FlipCard({ p, color, isFlipped, onToggle },
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 13, flexShrink: 0,
         }}>
-          {isFlipped ? "✓" : "👁"}
+          {isFlipped ? <Check size={15} /> : <Eye size={15} />}
         </div>
       </div>
     </div>
