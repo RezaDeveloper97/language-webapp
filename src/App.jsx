@@ -32,22 +32,35 @@ export default function App() {
   const searchBarRef = useRef(null);
   const online = useOnline();
 
-  /* ── Keep search bar above virtual keyboard ──────────────────────── */
+  /* ── Keep search bar above virtual keyboard (GPU-accelerated) ──── */
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
+    const el = searchBarRef.current;
+    if (!el) return;
+
     const update = () => {
-      const el = searchBarRef.current;
-      if (!el) return;
-      // On iOS PWA, fixed positioning uses layout viewport.
-      // visualViewport gives us the real visible rect.
-      // We position the bar at the bottom of what the user can actually see.
-      el.style.top = (vv.offsetTop + vv.height - el.offsetHeight) + "px";
+      const offsetBottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      el.style.transform = `translateY(-${offsetBottom}px)`;
     };
+
+    const onFocus = () => { document.body.style.overflow = "hidden"; };
+    const onBlur = () => {
+      document.body.style.overflow = "";
+      el.style.transform = "translateY(0)";
+    };
+
+    const input = el.querySelector("input");
     vv.addEventListener("resize", update);
     vv.addEventListener("scroll", update);
-    update();
-    return () => { vv.removeEventListener("resize", update); vv.removeEventListener("scroll", update); };
+    if (input) { input.addEventListener("focus", onFocus); input.addEventListener("blur", onBlur); }
+
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+      if (input) { input.removeEventListener("focus", onFocus); input.removeEventListener("blur", onBlur); }
+      document.body.style.overflow = "";
+    };
   }, []);
 
   /* Load pair data on demand */
@@ -383,8 +396,8 @@ export default function App() {
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
       <div ref={searchBarRef} style={{
-        position: "fixed", left: 0, right: 0, zIndex: 100,
-        bottom: 0,
+        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 100,
+        willChange: "transform",
         paddingBottom: "max(10px, env(safe-area-inset-bottom))",
         paddingTop: 16,
         paddingLeft: "max(14px, env(safe-area-inset-left))",
