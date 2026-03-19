@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, forwardRef } from "react";
 import { pairManifest, defaultPairId } from "./data/index.js";
 
 /* ── Offline hook ──────────────────────────────────────────────────────────── */
@@ -30,6 +30,7 @@ export default function App() {
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
   const tabsRef = useRef(null);
   const tabBtnRefs = useRef({});
+  const phraseRefs = useRef({});
   const searchInputRef = useRef(null);
   const online = useOnline();
 
@@ -43,6 +44,22 @@ export default function App() {
   const closeSearch = useCallback(() => {
     setSearchOpen(false);
     setSearch("");
+  }, []);
+
+  /* Navigate to a phrase from search results: switch tab, close search, scroll & flip */
+  const goToPhrase = useCallback((catId, phraseIndex) => {
+    // Close search first
+    setSearchOpen(false);
+    setSearch("");
+    // Switch to the category tab
+    setActiveCategory(catId);
+    // Flip the card open
+    setFlipped((prev) => ({ ...prev, [`${catId}-${phraseIndex}`]: true }));
+    // Scroll to the card after React re-renders
+    setTimeout(() => {
+      const el = phraseRefs.current[`${catId}-${phraseIndex}`];
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 120);
   }, []);
 
   /* Load pair data on demand */
@@ -102,13 +119,14 @@ export default function App() {
   const filtered = search.trim()
     ? categories.flatMap((cat) =>
         cat.phrases
+          .map((p, idx) => ({ p, idx }))
           .filter(
-            (p) =>
+            ({ p }) =>
               p.source.includes(search) ||
               p.target.toLowerCase().includes(search.toLowerCase()) ||
               p.pronounce.includes(search)
           )
-          .map((p) => ({ ...p, catTitle: cat.title, catColor: cat.color, catIcon: cat.icon }))
+          .map(({ p, idx }) => ({ ...p, catId: cat.id, catTitle: cat.title, catColor: cat.color, catIcon: cat.icon, phraseIndex: idx }))
       )
     : null;
 
@@ -296,7 +314,8 @@ export default function App() {
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {filtered.map((p, i) => (
-              <PhraseRow key={i} p={p} color={p.catColor} label={`${p.catIcon} ${p.catTitle}`} />
+              <PhraseRow key={i} p={p} color={p.catColor} label={`${p.catIcon} ${p.catTitle}`}
+                onNavigate={() => goToPhrase(p.catId, p.phraseIndex)} />
             ))}
           </div>
         </div>
@@ -354,6 +373,7 @@ export default function App() {
                         {current.phrases.map((p, i) => (
                           <FlipCard
                             key={i}
+                            ref={(el) => { phraseRefs.current[`${activeCatId}-${i}`] = el; }}
                             p={p}
                             color={current.color}
                             isFlipped={!!flipped[`${activeCatId}-${i}`]}
@@ -380,8 +400,8 @@ export default function App() {
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 150,
         paddingTop: online
-          ? "calc(max(10px, env(safe-area-inset-top)) + 56px)"
-          : "calc(max(44px, calc(env(safe-area-inset-top) + 36px)) + 56px)",
+          ? "calc(max(10px, env(safe-area-inset-top)) + 10px)"
+          : "calc(max(44px, calc(env(safe-area-inset-top) + 36px)) + 10px)",
         paddingLeft: "max(14px, env(safe-area-inset-left))",
         paddingRight: "max(14px, env(safe-area-inset-right))",
         paddingBottom: 12,
@@ -406,7 +426,7 @@ export default function App() {
             ref={searchInputRef}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            onBlur={closeSearch}
+            onBlur={() => { setTimeout(closeSearch, 150); }}
             placeholder="جستجو..."
             style={{
               flex: 1, padding: "12px 18px",
@@ -616,9 +636,10 @@ function CategoryPanel({ cat }) {
 }
 
 /* ── FlipCard ──────────────────────────────────────────────────────────────── */
-function FlipCard({ p, color, isFlipped, onToggle }) {
+const FlipCard = forwardRef(function FlipCard({ p, color, isFlipped, onToggle }, ref) {
   return (
     <div
+      ref={ref}
       onClick={onToggle}
       style={{
         background: isFlipped
@@ -659,29 +680,22 @@ function FlipCard({ p, color, isFlipped, onToggle }) {
       </div>
     </div>
   );
-}
+});
 
 /* ── PhraseRow (search results) ────────────────────────────────────────────── */
-function PhraseRow({ p, color, label }) {
-  const [show, setShow] = useState(false);
+function PhraseRow({ p, color, label, onNavigate }) {
   return (
     <div
-      onClick={() => setShow(!show)}
+      onClick={onNavigate}
       style={{
-        background: show ? `${color}15` : "#1e1e2e",
-        border: `1px solid ${show ? color + "44" : "#ffffff10"}`,
+        background: "#1e1e2e",
+        border: `1px solid #ffffff10`,
         borderRadius: 12, padding: "12px 14px", cursor: "pointer",
       }}
     >
       <div style={{ fontSize: 11, color, marginBottom: 4 }}>{label}</div>
       <div style={{ fontSize: 15, fontWeight: 700 }}>{p.source}</div>
       <div style={{ fontSize: 13, color: "#94a3b8" }}>{p.target}</div>
-      {show && (
-        <div style={{ marginTop: 8, padding: "6px 10px", background: `${color}20`, borderRadius: 6, borderRight: `2px solid ${color}` }}>
-          <span style={{ fontSize: 11, color }}>تلفظ: </span>
-          <span style={{ fontSize: 13, color: "#fde68a", fontWeight: 600 }}>{p.pronounce}</span>
-        </div>
-      )}
     </div>
   );
 }
