@@ -29,7 +29,26 @@ export default function App() {
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
   const tabsRef = useRef(null);
   const tabBtnRefs = useRef({});
+  const searchBarRef = useRef(null);
   const online = useOnline();
+
+  /* ── Keep search bar above virtual keyboard ──────────────────────── */
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const el = searchBarRef.current;
+      if (!el) return;
+      // On iOS PWA, fixed positioning uses layout viewport.
+      // visualViewport gives us the real visible rect.
+      // We position the bar at the bottom of what the user can actually see.
+      el.style.top = (vv.offsetTop + vv.height - el.offsetHeight) + "px";
+    };
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    update();
+    return () => { vv.removeEventListener("resize", update); vv.removeEventListener("scroll", update); };
+  }, []);
 
   /* Load pair data on demand */
   useEffect(() => {
@@ -363,7 +382,16 @@ export default function App() {
       )}
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
-      <div className="search-bar-wrap">
+      <div ref={searchBarRef} style={{
+        position: "fixed", left: 0, right: 0, zIndex: 100,
+        bottom: 0,
+        paddingBottom: "max(10px, env(safe-area-inset-bottom))",
+        paddingTop: 16,
+        paddingLeft: "max(14px, env(safe-area-inset-left))",
+        paddingRight: "max(14px, env(safe-area-inset-right))",
+        background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
+        pointerEvents: "none",
+      }}>
         <div style={{
           maxWidth: 480, margin: "0 auto",
           background: "rgba(255,255,255,0.07)",
