@@ -1,0 +1,17 @@
+{
+  "id": "taxi",
+  "icon": "🚕",
+  "title": "تاکسی / Grab",
+  "color": "#10b981",
+  "tip": "💡 توی مالزی Grab خیلی بهتر از تاکسیه — قیمت ثابت، بدون چانه‌زنی!",
+  "phrases": [
+    { "fa": "به این آدرس میری؟", "en": "Can you take me to this address?", "pronounce": "کَن یو تِیک می تو دیس اَدرِس؟" },
+    { "fa": "کنتور داری؟", "en": "Do you use the meter?", "pronounce": "دو یو یوز د میتِر؟" },
+    { "fa": "چقدر میشه تا…؟", "en": "How much to go to…?", "pronounce": "هاو ماچ تو گو تو…؟" },
+    { "fa": "اینجا پیاده میشم", "en": "Please stop here", "pronounce": "پلیز استاپ هیر" },
+    { "fa": "سریع‌تر لطفاً", "en": "A bit faster please", "pronounce": "اِ بیت فَستِر پلیز" },
+    { "fa": "آروم‌تر لطفاً", "en": "A bit slower please", "pronounce": "اِ بیت اِسلوِر پلیز" },
+    { "fa": "منتظرم بمون", "en": "Please wait for me", "pronounce": "پلیز وِیت فور می" },
+    { "fa": "یه کم گرمه", "en": "It's a bit hot", "pronounce": "ایتس اِ بیت هات" }
+  ]
+}

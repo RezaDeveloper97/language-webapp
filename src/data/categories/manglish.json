@@ -1,0 +1,16 @@
+{
+  "id": "manglish",
+  "icon": "🇲🇾",
+  "title": "Manglish — لهجه مالزی",
+  "color": "#8b5cf6",
+  "tip": "💡 Manglish = ترکیب انگلیسی + مالایی + چینی. وقتی «lah» میشنوی، یعنی داری با یه مالزیایی واقعی صحبت میکنی 😄",
+  "phrases": [
+    { "fa": "باشه / مشکلی نیست", "en": "Okay lah", "pronounce": "اوکِی لا" },
+    { "fa": "میشه؟", "en": "Can?", "pronounce": "کَن؟" },
+    { "fa": "آره میشه", "en": "Can lah", "pronounce": "کَن لا" },
+    { "fa": "نمیشه", "en": "Cannot", "pronounce": "کَنات" },
+    { "fa": "ارزونه", "en": "Very cheap lah", "pronounce": "وِری چیپ لا" },
+    { "fa": "همینجاس", "en": "Here one", "pronounce": "هیر وان" },
+    { "fa": "بخور بخور!", "en": "Makan makan!", "pronounce": "ماکان ماکان! (مالایی = بیا غذا بخور)" }
+  ]
+}
