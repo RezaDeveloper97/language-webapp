@@ -1,0 +1,49 @@
+{
+  "id": "emergency",
+  "icon": "🚨",
+  "title": "اورژانس و مهم",
+  "color": "#dc2626",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "هِلپ!",
+      "source": "کمک!",
+      "target": "Help!"
+    },
+    {
+      "pronounce": "کال اَن اَمبیولِنس!",
+      "source": "با اورژانس تماس بگیر",
+      "target": "Call an ambulance!"
+    },
+    {
+      "pronounce": "کال د پُلیس!",
+      "source": "پلیس بخواه",
+      "target": "Call the police!"
+    },
+    {
+      "pronounce": "آیم لاست",
+      "source": "گم شدم",
+      "target": "I'm lost"
+    },
+    {
+      "pronounce": "مای بَگ واز استولِن",
+      "source": "کیفم دزدیده شد",
+      "target": "My bag was stolen"
+    },
+    {
+      "pronounce": "آی دونت فیل وِل",
+      "source": "حالم خوب نیست",
+      "target": "I don't feel well"
+    },
+    {
+      "pronounce": "وِر ایز د هاسپیتِل؟",
+      "source": "بیمارستان کجاست؟",
+      "target": "Where is the hospital?"
+    },
+    {
+      "pronounce": "وِر ایز د فارمِسی؟",
+      "source": "داروخانه کجاست؟",
+      "target": "Where is the pharmacy?"
+    }
+  ]
+}

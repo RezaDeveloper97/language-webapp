@@ -1,0 +1,16 @@
+{
+  "id": "fa-en",
+  "name": "فارسی ← انگلیسی",
+  "description": "مناسب برای سفر به مالزی 🇲🇾",
+  "uiDir": "rtl",
+  "sourceLang": {
+    "code": "fa",
+    "name": "فارسی",
+    "flag": "🇮🇷"
+  },
+  "targetLang": {
+    "code": "en",
+    "name": "English",
+    "flag": "🇬🇧"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "restaurant",
+  "icon": "🍜",
+  "title": "رستوران",
+  "color": "#ef4444",
+  "tip": "💡 بیشتر رستوران‌ها حلاله ولی رستوران‌های چینی ممکنه نباشن. مطمئن شو!",
+  "phrases": [
+    {
+      "pronounce": "کَن آی سی د مِنیو پلیز؟",
+      "source": "منو لطفاً",
+      "target": "Can I see the menu please?"
+    },
+    {
+      "pronounce": "دو یو رِکِمِند دیس؟",
+      "source": "اینو توصیه میکنی؟",
+      "target": "Do you recommend this?"
+    },
+    {
+      "pronounce": "نات اِسپایسی پلیز",
+      "source": "تند نباشه",
+      "target": "Not spicy please"
+    },
+    {
+      "pronounce": "نو پورک پلیز",
+      "source": "بدون گوشت خوک",
+      "target": "No pork please"
+    },
+    {
+      "pronounce": "ایز ایت هَلال؟",
+      "source": "حلاله؟",
+      "target": "Is it halal?"
+    },
+    {
+      "pronounce": "پِلین واتِر پلیز",
+      "source": "آب ساده لطفاً",
+      "target": "Plain water please"
+    },
+    {
+      "pronounce": "بیل پلیز",
+      "source": "فاکتور لطفاً",
+      "target": "Bill please"
+    },
+    {
+      "pronounce": "سِپِریت بیلز پلیز",
+      "source": "جدا جدا حساب",
+      "target": "Separate bills please"
+    },
+    {
+      "pronounce": "ایت واز دِلیشِس!",
+      "source": "خیلی خوشمزه بود!",
+      "target": "It was delicious!"
+    }
+  ]
+}
