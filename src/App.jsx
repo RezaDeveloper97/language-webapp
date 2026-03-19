@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = [
 {
@@ -134,10 +134,24 @@ phrases: [
 },
 ];
 
+/* ── Offline hook ──────────────────────────────────────────────────────────── */
+function useOnline() {
+  const [online, setOnline] = useState(navigator.onLine);
+  useEffect(() => {
+    const on  = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener('online',  on);
+    window.addEventListener('offline', off);
+    return () => { window.removeEventListener('online', on); window.removeEventListener('offline', off); };
+  }, []);
+  return online;
+}
+
 export default function App() {
 const [active, setActive] = useState("price");
 const [flipped, setFlipped] = useState({});
 const [search, setSearch] = useState("");
+const online = useOnline();
 
 const toggle = (key) => setFlipped((p) => ({ ...p, [key]: !p[key] }));
 
@@ -158,52 +172,94 @@ p.pronounce.includes(search)
 
 return (
 <div style={{
-minHeight: "100vh",
+minHeight: "100dvh",
 background: "#0f0f13",
 color: "#f1f1f5",
 fontFamily: "'Segoe UI', Tahoma, sans-serif",
 direction: "rtl",
 }}>
-{/* Header */}
-<div style={{
-background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-padding: "24px 20px 20px",
-textAlign: "center",
-borderBottom: "1px solid #ffffff15",
-}}>
-<div style={{ fontSize: 36, marginBottom: 8 }}>🇲🇾</div>
-<h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#fff", letterSpacing: 1 }}>
-انگلیسی سفر مالزی
-</h1>
-<p style={{ margin: "6px 0 0", color: "#94a3b8", fontSize: 13 }}>
-روی هر کارت بزن تا تلفظ ببینی
-</p>
 
-    {/* Search */}
+  {/* ── Offline banner ──────────────────────────────────────────────────── */}
+  {!online && (
+    <div style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 9999,
+      background: "linear-gradient(90deg, #dc2626, #b91c1c)",
+      color: "#fff",
+      textAlign: "center",
+      fontSize: 13,
+      fontWeight: 600,
+      padding: "8px 16px",
+      paddingTop: "max(8px, calc(env(safe-area-inset-top) + 4px))",
+      letterSpacing: 0.3,
+      boxShadow: "0 2px 12px rgba(220,38,38,0.5)",
+    }}>
+      📵 آفلاین هستید — اطلاعات از حافظه بارگذاری شد
+    </div>
+  )}
+
+  {/* ── Header — iOS Liquid Glass ────────────────────────────────────────── */}
+  <div style={{
+    position: "sticky",
+    top: 0,
+    zIndex: 100,
+    /* Liquid Glass: content extends under translucent status bar */
+    paddingTop: online
+      ? "max(20px, env(safe-area-inset-top))"
+      : "max(44px, calc(env(safe-area-inset-top) + 36px))",
+    paddingBottom: 16,
+    paddingLeft:  "max(20px, env(safe-area-inset-left))",
+    paddingRight: "max(20px, env(safe-area-inset-right))",
+    textAlign: "center",
+    /* Frosted glass — matches iOS 18 Liquid Glass material */
+    backdropFilter: "blur(24px) saturate(200%) brightness(0.9)",
+    WebkitBackdropFilter: "blur(24px) saturate(200%) brightness(0.9)",
+    background: "rgba(10, 12, 24, 0.72)",
+    borderBottom: "1px solid rgba(255,255,255,0.09)",
+    /* Specular highlight at top edge */
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10), 0 8px 32px rgba(0,0,0,0.4)",
+    transition: "padding-top 0.3s ease",
+  }}>
+    <div style={{ fontSize: 34, marginBottom: 6, lineHeight: 1 }}>🇲🇾</div>
+    <h1 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: "#fff", letterSpacing: 0.5 }}>
+      انگلیسی سفر مالزی
+    </h1>
+    <p style={{ margin: "4px 0 0", color: "#94a3b8", fontSize: 12 }}>
+      روی هر کارت بزن تا تلفظ ببینی
+    </p>
+
+    {/* Search — glass pill */}
     <input
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       placeholder="🔍 جستجو به فارسی یا انگلیسی..."
       style={{
-        marginTop: 16,
+        marginTop: 14,
         width: "100%",
         maxWidth: 400,
         padding: "10px 14px",
-        borderRadius: 10,
-        border: "1px solid #ffffff20",
-        background: "#ffffff10",
+        borderRadius: 22,
+        border: "1px solid rgba(255,255,255,0.15)",
+        background: "rgba(255,255,255,0.08)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
         color: "#fff",
         fontSize: 14,
         outline: "none",
         textAlign: "right",
         boxSizing: "border-box",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+        transition: "border-color 0.2s",
       }}
     />
   </div>
 
   {/* Search Results */}
   {filtered ? (
-    <div style={{ padding: "16px 16px 32px" }}>
+    <div style={{ padding: "16px 16px", paddingBottom: "max(32px, calc(env(safe-area-inset-bottom) + 20px))" }}>
       <p style={{ color: "#94a3b8", fontSize: 13, marginBottom: 12 }}>
         {filtered.length} نتیجه پیدا شد
       </p>
@@ -247,7 +303,7 @@ borderBottom: "1px solid #ffffff15",
       </div>
 
       {/* Phrases */}
-      <div style={{ padding: "16px 14px 40px" }}>
+      <div style={{ padding: "16px 14px", paddingBottom: "max(40px, calc(env(safe-area-inset-bottom) + 24px))" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {current.phrases.map((p, i) => (
             <FlipCard

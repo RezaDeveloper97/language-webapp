@@ -1,0 +1,49 @@
+{
+  "name": "انگلیسی سفر مالزی",
+  "short_name": "مالزی 🇲🇾",
+  "description": "عبارات کاربردی انگلیسی برای سفر به مالزی — آفلاین کار می‌کند",
+  "theme_color": "#010066",
+  "background_color": "#0f0f13",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "scope": "/learning-language/",
+  "start_url": "/learning-language/",
+  "lang": "fa",
+  "dir": "rtl",
+  "categories": ["education", "travel"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "pwa-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "صفحه اصلی"
+    }
+  ]
+}
