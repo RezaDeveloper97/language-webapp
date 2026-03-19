@@ -110,8 +110,7 @@ export default function App() {
     }
     if (ref.locked === "v") return;
 
-    // RTL: positive deltaX = swipe right = previous tab
-    const dir = uiDir === "rtl" ? 1 : -1;
+    const dir = uiDir === "rtl" ? -1 : 1;
     const goingPrev = deltaX * dir > 0;
     const goingNext = deltaX * dir < 0;
     const atFirst = activeCatIndex === 0;
@@ -129,7 +128,7 @@ export default function App() {
     if (ref.locked !== "h") { setSwipeOffset(0); return; }
 
     const deltaX = swipeOffset;
-    const dir = uiDir === "rtl" ? 1 : -1;
+    const dir = uiDir === "rtl" ? -1 : 1;
     const goingPrev = deltaX * dir > 0;
     const goingNext = deltaX * dir < 0;
     const atFirst = activeCatIndex === 0;
@@ -143,12 +142,16 @@ export default function App() {
       setSwipeOffset(slideOut);
 
       setTimeout(() => {
+        // Turn off transition so the jump to opposite side is instant
+        setIsTransitioning(false);
         setActiveCategory(categories[newIndex].id);
         setFlipped({});
         setSwipeOffset(-slideOut); // position new content on opposite side
-        // Next frame: animate to center
+
+        // Next frame: re-enable transition and animate to center
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
+            setIsTransitioning(true);
             setSwipeOffset(0);
             setTimeout(() => setIsTransitioning(false), 280);
           });
