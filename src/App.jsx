@@ -38,27 +38,54 @@ export default function App() {
     if (!vv) return;
     const el = searchBarRef.current;
     if (!el) return;
+    const input = el.querySelector("input");
+    let rafId = null;
+    let keyboardOpen = false;
+    let lastOffset = 0;
 
-    const update = () => {
+    const applyOffset = () => {
       const offsetBottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      el.style.transform = `translateY(-${offsetBottom}px)`;
+      // Only update DOM when value actually changed
+      if (offsetBottom !== lastOffset) {
+        lastOffset = offsetBottom;
+        el.style.transform = `translateY(-${offsetBottom}px)`;
+      }
     };
 
-    const onFocus = () => { document.body.style.overflow = "hidden"; };
+    /* Continuous RAF loop while keyboard is open — catches scroll,
+       content reflow (search results changing), and any viewport drift */
+    const tick = () => {
+      if (!keyboardOpen) return;
+      applyOffset();
+      rafId = requestAnimationFrame(tick);
+    };
+
+    /* Also listen to viewport events as a belt-and-suspenders approach */
+    vv.addEventListener("resize", applyOffset);
+    vv.addEventListener("scroll", applyOffset);
+
+    const onFocus = () => {
+      keyboardOpen = true;
+      document.body.style.overflow = "hidden";
+      // Start the RAF loop
+      rafId = requestAnimationFrame(tick);
+    };
+
     const onBlur = () => {
+      keyboardOpen = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       document.body.style.overflow = "";
+      lastOffset = 0;
       el.style.transform = "translateY(0)";
     };
 
-    const input = el.querySelector("input");
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
     if (input) { input.addEventListener("focus", onFocus); input.addEventListener("blur", onBlur); }
 
     return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
+      vv.removeEventListener("resize", applyOffset);
+      vv.removeEventListener("scroll", applyOffset);
       if (input) { input.removeEventListener("focus", onFocus); input.removeEventListener("blur", onBlur); }
+      if (rafId) cancelAnimationFrame(rafId);
       document.body.style.overflow = "";
     };
   }, []);
@@ -395,7 +422,7 @@ export default function App() {
       )}
 
       {/* ── Fixed Bottom Search Bar (Liquid Glass) ──────────────────────── */}
-      <div ref={searchBarRef} style={{
+      <div ref={searchBarRef} className="search-bar-kb" style={{
         position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 100,
         willChange: "transform",
         paddingBottom: "max(10px, env(safe-area-inset-bottom))",
