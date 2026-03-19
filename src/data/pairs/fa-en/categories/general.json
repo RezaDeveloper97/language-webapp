@@ -1,0 +1,74 @@
+{
+  "id": "general",
+  "icon": "🗣️",
+  "title": "روزمره عمومی",
+  "color": "#0ea5e9",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "هِلو!",
+      "source": "سلام",
+      "target": "Hello!"
+    },
+    {
+      "pronounce": "گودبای!",
+      "source": "خداحافظ",
+      "target": "Goodbye!"
+    },
+    {
+      "pronounce": "تَنک یو",
+      "source": "ممنون",
+      "target": "Thank you"
+    },
+    {
+      "pronounce": "یور وِلکِم",
+      "source": "خواهش میکنم",
+      "target": "You're welcome"
+    },
+    {
+      "pronounce": "اِکسکیوز می",
+      "source": "ببخشید",
+      "target": "Excuse me"
+    },
+    {
+      "pronounce": "آی دونت آندِراِستَند",
+      "source": "متوجه نشدم",
+      "target": "I don't understand"
+    },
+    {
+      "pronounce": "پلیز اِسپیک اِسلولی",
+      "source": "آروم‌تر بگو لطفاً",
+      "target": "Please speak slowly"
+    },
+    {
+      "pronounce": "کود یو ریپیت دَت؟",
+      "source": "دوباره بگو",
+      "target": "Could you repeat that?"
+    },
+    {
+      "pronounce": "مای اینگلیش ایز نات وِری گود",
+      "source": "انگلیسیم ضعیفه",
+      "target": "My English is not very good"
+    },
+    {
+      "pronounce": "هاو آر یو؟",
+      "source": "چطوری؟",
+      "target": "How are you?"
+    },
+    {
+      "pronounce": "آیم فاین، تَنک یو",
+      "source": "خوبم، ممنون",
+      "target": "I'm fine, thank you"
+    },
+    {
+      "pronounce": "واِتس یور نِیم؟",
+      "source": "اسمت چیه؟",
+      "target": "What's your name?"
+    },
+    {
+      "pronounce": "مای نِیم ایز …",
+      "source": "اسمم … هست",
+      "target": "My name is …"
+    }
+  ]
+}

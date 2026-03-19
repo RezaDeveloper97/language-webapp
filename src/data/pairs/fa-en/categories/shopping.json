@@ -1,0 +1,39 @@
+{
+  "id": "shopping",
+  "icon": "🛍️",
+  "title": "خرید",
+  "color": "#ec4899",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "جاِست لوکینگ، تَنکس",
+      "source": "فقط نگاه میکنم",
+      "target": "Just looking, thanks"
+    },
+    {
+      "pronounce": "دو یو هَو مای سایز؟",
+      "source": "سایز داری؟",
+      "target": "Do you have my size?"
+    },
+    {
+      "pronounce": "وِر ایز د فیتینگ روم؟",
+      "source": "اتاق پرو کجاست؟",
+      "target": "Where is the fitting room?"
+    },
+    {
+      "pronounce": "دو یو هَو اِنادِر کالِر؟",
+      "source": "رنگ دیگه داری؟",
+      "target": "Do you have another color?"
+    },
+    {
+      "pronounce": "آید لایک تو ریتِرن دیس",
+      "source": "این رو برمیگردونم",
+      "target": "I'd like to return this"
+    },
+    {
+      "pronounce": "دو یو هَو اِ بَگ؟",
+      "source": "کیسه داری؟",
+      "target": "Do you have a bag?"
+    }
+  ]
+}

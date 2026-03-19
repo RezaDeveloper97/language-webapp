@@ -1,0 +1,39 @@
+{
+  "id": "price",
+  "icon": "💰",
+  "title": "قیمت و چانه‌زنی",
+  "color": "#f59e0b",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "هاو ماچ ایز دیس؟",
+      "source": "این چنده؟",
+      "target": "How much is this?"
+    },
+    {
+      "pronounce": "ایتس تو اِکسپِنسیو",
+      "source": "خیلی گرونه",
+      "target": "It's too expensive"
+    },
+    {
+      "pronounce": "کَن یو گیو می اِ دیسکاونت؟",
+      "source": "تخفیف میدی؟",
+      "target": "Can you give me a discount?"
+    },
+    {
+      "pronounce": "ایز دیس یور بِست پرایس؟",
+      "source": "قیمت نهاییته؟",
+      "target": "Is this your best price?"
+    },
+    {
+      "pronounce": "دیل! آیل تِیک ایت",
+      "source": "قبوله، میگیرمش",
+      "target": "Deal! I'll take it."
+    },
+    {
+      "pronounce": "نو تَنکس",
+      "source": "نه ممنون",
+      "target": "No thanks"
+    }
+  ]
+}

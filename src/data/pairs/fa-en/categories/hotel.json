@@ -1,0 +1,59 @@
+{
+  "id": "hotel",
+  "icon": "🏨",
+  "title": "هتل",
+  "color": "#6366f1",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "آی هَو اِ رِزِرویشن",
+      "source": "رزرو دارم",
+      "target": "I have a reservation"
+    },
+    {
+      "pronounce": "دو یو هَو اِویلِبِل رومز؟",
+      "source": "اتاق داری؟",
+      "target": "Do you have available rooms?"
+    },
+    {
+      "pronounce": "اِ سینگل روم",
+      "source": "اتاق یه نفره",
+      "target": "A single room"
+    },
+    {
+      "pronounce": "اِ داِبل روم",
+      "source": "اتاق دو نفره",
+      "target": "A double room"
+    },
+    {
+      "pronounce": "داز ایت اینکلود بِرِکفِست؟",
+      "source": "صبحانه داره؟",
+      "target": "Does it include breakfast?"
+    },
+    {
+      "pronounce": "واِت تایم ایز چِک-این؟",
+      "source": "چک‌این چه ساعتیه؟",
+      "target": "What time is check-in?"
+    },
+    {
+      "pronounce": "کَن آی چِک این اِرلی؟",
+      "source": "زود چک‌این میشه؟",
+      "target": "Can I check in early?"
+    },
+    {
+      "pronounce": "واِتس د وای‌فای پَسوِرد؟",
+      "source": "رمز وای‌فای چیه؟",
+      "target": "What's the WiFi password?"
+    },
+    {
+      "pronounce": "آی لاکت مای‌سِلف اِوت",
+      "source": "کلیدم توی اتاق جا موند",
+      "target": "I locked myself out"
+    },
+    {
+      "pronounce": "پلیز کلین مای روم",
+      "source": "اتاقم رو تمیز کنین",
+      "target": "Please clean my room"
+    }
+  ]
+}
