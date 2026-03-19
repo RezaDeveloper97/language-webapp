@@ -32,21 +32,39 @@ export default function App() {
   const searchBarRef = useRef(null);
   const online = useOnline();
 
-  /* ── Keep search bar above virtual keyboard (direct DOM for zero lag) ── */
+  /* ── Keep search bar above virtual keyboard (iOS PWA compatible) ── */
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
+    let raf = 0;
     const update = () => {
-      const el = searchBarRef.current;
-      if (!el) return;
-      const diff = window.innerHeight - vv.height - vv.offsetTop;
-      const kb = diff > 50 ? diff : 0;
-      el.style.bottom = kb + "px";
-      el.style.paddingBottom = kb > 0 ? "6px" : "max(10px, env(safe-area-inset-bottom))";
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const el = searchBarRef.current;
+        if (!el) return;
+        // iOS PWA: fixed elements stick to layout viewport, not visual viewport.
+        // We compute where the visual bottom actually is and translate the bar there.
+        const offsetTop = vv.offsetTop;          // how far page has scrolled up
+        const visibleH  = vv.height;             // visible height (minus keyboard)
+        const layoutH   = window.innerHeight;    // full layout viewport height
+        // How many px the keyboard covers from the bottom of the layout viewport:
+        const kb = layoutH - (offsetTop + visibleH);
+        if (kb > 50) {
+          el.style.transform = `translateY(${-kb}px)`;
+          el.style.paddingBottom = "6px";
+        } else {
+          el.style.transform = "translateY(0)";
+          el.style.paddingBottom = "max(10px, env(safe-area-inset-bottom))";
+        }
+      });
     };
     vv.addEventListener("resize", update);
     vv.addEventListener("scroll", update);
-    return () => { vv.removeEventListener("resize", update); vv.removeEventListener("scroll", update); };
+    return () => {
+      cancelAnimationFrame(raf);
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
   }, []);
 
   /* Load pair data on demand */
@@ -390,6 +408,8 @@ export default function App() {
         paddingRight: "max(14px, env(safe-area-inset-right))",
         background: "linear-gradient(180deg, rgba(15,15,19,0.0) 0%, rgba(15,15,19,0.92) 35%)",
         pointerEvents: "none",
+        willChange: "transform",
+        transform: "translateY(0)",
       }}>
         <div style={{
           maxWidth: 480, margin: "0 auto",
