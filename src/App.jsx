@@ -39,37 +39,43 @@ export default function App() {
     const el = searchBarRef.current;
     if (!el) return;
     const input = el.querySelector("input");
-    const isPWA = window.matchMedia("(display-mode: standalone)").matches;
-    let pollTimer = null;
+    let rafId = null;
+    let keyboardOpen = false;
+    let lastOffset = 0;
 
     const applyOffset = () => {
       const offsetBottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      el.style.transform = `translateY(-${offsetBottom}px)`;
+      // Only update DOM when value actually changed
+      if (offsetBottom !== lastOffset) {
+        lastOffset = offsetBottom;
+        el.style.transform = `translateY(-${offsetBottom}px)`;
+      }
     };
 
-    /* iOS PWA fires scroll instead of resize sometimes — listen to both */
+    /* Continuous RAF loop while keyboard is open — catches scroll,
+       content reflow (search results changing), and any viewport drift */
+    const tick = () => {
+      if (!keyboardOpen) return;
+      applyOffset();
+      rafId = requestAnimationFrame(tick);
+    };
+
+    /* Also listen to viewport events as a belt-and-suspenders approach */
     vv.addEventListener("resize", applyOffset);
     vv.addEventListener("scroll", applyOffset);
 
     const onFocus = () => {
+      keyboardOpen = true;
       document.body.style.overflow = "hidden";
-      /* Polling fallback for iOS PWA: keyboard may open with delay */
-      if (isPWA) {
-        let elapsed = 0;
-        pollTimer = setInterval(() => {
-          elapsed += 50;
-          applyOffset();
-          if (window.innerHeight - vv.height > 100 || elapsed >= 1000) {
-            clearInterval(pollTimer);
-            pollTimer = null;
-          }
-        }, 50);
-      }
+      // Start the RAF loop
+      rafId = requestAnimationFrame(tick);
     };
 
     const onBlur = () => {
-      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+      keyboardOpen = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       document.body.style.overflow = "";
+      lastOffset = 0;
       el.style.transform = "translateY(0)";
     };
 
@@ -79,7 +85,7 @@ export default function App() {
       vv.removeEventListener("resize", applyOffset);
       vv.removeEventListener("scroll", applyOffset);
       if (input) { input.removeEventListener("focus", onFocus); input.removeEventListener("blur", onBlur); }
-      if (pollTimer) clearInterval(pollTimer);
+      if (rafId) cancelAnimationFrame(rafId);
       document.body.style.overflow = "";
     };
   }, []);
