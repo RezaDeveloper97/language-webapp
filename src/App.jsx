@@ -24,6 +24,7 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [flipped, setFlipped]           = useState({});
   const [search, setSearch]             = useState("");
+  const [searchOpen, setSearchOpen]     = useState(false);
   const [swipeOffset, setSwipeOffset]   = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const cache = useRef({});  // loaded pairs keyed by id — avoids re-downloading
@@ -34,15 +35,21 @@ export default function App() {
   const searchInputRef = useRef(null);
   const online = useOnline();
 
-  /* Focus search input + scroll to top */
+  /* Open search: called directly in click handler (iOS needs sync .focus()) */
   const openSearch = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSearchOpen(true);
     searchInputRef.current?.focus();
+  }, []);
+
+  const closeSearch = useCallback(() => {
+    setSearchOpen(false);
+    setSearch("");
   }, []);
 
   /* Navigate to a phrase from search results: switch tab, close search, scroll & flip */
   const goToPhrase = useCallback((catId, phraseIndex) => {
-    // Clear search
+    // Close search first
+    setSearchOpen(false);
     setSearch("");
     // Switch to the category tab
     setActiveCategory(catId);
@@ -389,60 +396,58 @@ export default function App() {
         </>
       )}
 
-      {/* ── Fixed Search Bar (always visible below header) ───────────────── */}
+      {/* ── Top Search Bar (slides down from header) ───────────────────── */}
       <div style={{
-        position: "sticky", top: 0, zIndex: 99,
-        paddingTop: 8,
-        paddingBottom: 8,
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 150,
+        paddingTop: online
+          ? "calc(max(10px, env(safe-area-inset-top)) + 10px)"
+          : "calc(max(44px, calc(env(safe-area-inset-top) + 36px)) + 10px)",
         paddingLeft: "max(14px, env(safe-area-inset-left))",
         paddingRight: "max(14px, env(safe-area-inset-right))",
-        background: "rgba(10, 12, 24, 0.72)",
-        backdropFilter: "blur(24px) saturate(200%)",
-        WebkitBackdropFilter: "blur(24px) saturate(200%)",
+        paddingBottom: 12,
+        transform: searchOpen ? "translateY(0)" : "translateY(-100%)",
+        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        willChange: "transform",
+        background: "linear-gradient(180deg, rgba(15,15,19,0.95) 60%, rgba(15,15,19,0.0) 100%)",
+        pointerEvents: searchOpen ? "auto" : "none",
       }}>
         <div style={{
           maxWidth: 480, margin: "0 auto",
-          background: "rgba(255,255,255,0.08)",
+          background: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(24px) saturate(180%)",
+          WebkitBackdropFilter: "blur(24px) saturate(180%)",
           borderRadius: 9999,
-          border: "1px solid rgba(255,255,255,0.15)",
+          border: "1px solid rgba(255,255,255,0.25)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3)",
           padding: 4,
           display: "flex", alignItems: "center",
         }}>
-          <div style={{
-            display: "flex", alignItems: "center", justifyContent: "center",
-            width: 36, height: 36, flexShrink: 0,
-            marginLeft: 4, marginRight: 4,
-            color: "#64748b",
-          }}>
-            <Search size={16} />
-          </div>
           <input
             ref={searchInputRef}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onBlur={() => { setTimeout(closeSearch, 150); }}
             placeholder="جستجو..."
             style={{
-              flex: 1, padding: "10px 4px",
+              flex: 1, padding: "12px 18px",
               borderRadius: 9999, border: "none",
               background: "transparent",
-              color: "#fff", fontSize: 14, outline: "none",
+              color: "#fff", fontSize: 15, outline: "none",
               textAlign: uiDir === "rtl" ? "right" : "left",
               boxSizing: "border-box",
               fontFamily: "inherit",
             }}
           />
-          {search && (
-            <button
-              onMouseDown={(e) => { e.preventDefault(); setSearch(""); }}
-              style={{
-                width: 32, height: 32, borderRadius: "50%", border: "none",
-                background: "rgba(255,255,255,0.1)", color: "#94a3b8",
-                fontSize: 16, cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                flexShrink: 0, marginLeft: 4, marginRight: 4,
-              }}
-            ><X size={16} /></button>
-          )}
+          <button
+            onMouseDown={(e) => { e.preventDefault(); closeSearch(); }}
+            style={{
+              width: 36, height: 36, borderRadius: "50%", border: "none",
+              background: "rgba(255,255,255,0.1)", color: "#94a3b8",
+              fontSize: 16, cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0, marginLeft: 4, marginRight: 4,
+            }}
+          ><X size={18} /></button>
         </div>
       </div>
 
@@ -485,7 +490,9 @@ export default function App() {
               color: "#fff", fontSize: 20, cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0,
-              transition: "transform 0.2s ease",
+              transform: searchOpen ? "scale(0.8)" : "scale(1)",
+              opacity: searchOpen ? 0 : 1,
+              transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease",
             }}
           ><Search size={22} /></button>
           {/* Bookmarks */}
