@@ -9,17 +9,20 @@
   "settings.themeColor": "رنگ تم",
   "settings.learning": "یادگیری",
   "settings.cardOrder": "ترتیب نمایش کارت",
-  "settings.cardOrder.sourceFirst": "فارسی اول",
-  "settings.cardOrder.targetFirst": "انگلیسی اول",
+  "settings.cardOrder.sourceFirst": "{lang} اول",
+  "settings.cardOrder.targetFirst": "{lang} اول",
   "settings.general": "عمومی",
   "settings.version": "نسخه",
   "settings.uiLanguage": "زبان رابط کاربری",
   "home.searchResults": "{count} نتیجه پیدا شد",
   "search.placeholder": "جستجو...",
   "pairPicker.title": "انتخاب زبان",
+  "pairPicker.pairName": "{source} ← {target}",
   "flipCard.pronunciation": "تلفظ: ",
   "offline.message": "آفلاین هستید — اطلاعات از حافظه بارگذاری شد",
   "loading.text": "در حال بارگذاری...",
   "app.name": "زبان من",
-  "app.description": "یادگیری عبارات کاربردی زبان"
+  "app.description": "یادگیری عبارات کاربردی زبان",
+  "lang.fa": "فارسی",
+  "lang.en": "انگلیسی"
 }

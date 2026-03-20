@@ -69,6 +69,7 @@ export function AppLayout() {
       <Outlet context={{
         categories,
         dir,
+        meta,
         filtered,
         activeCategory,
         setActiveCategory,

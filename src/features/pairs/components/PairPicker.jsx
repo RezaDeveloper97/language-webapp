@@ -27,7 +27,10 @@ export function PairPicker({ manifest, activePairId, onSelect, onClose }) {
 
                 <div className={styles.textBlock}>
                   <div className={`${styles.name} ${isActive ? styles.nameActive : ""}`}>
-                    {meta.name}
+                    {t("pairPicker.pairName", {
+                      source: t(`lang.${meta.sourceLang.code}`),
+                      target: t(`lang.${meta.targetLang.code}`),
+                    })}
                   </div>
                   <div className={styles.desc}>{t("app.description")}</div>
                 </div>
