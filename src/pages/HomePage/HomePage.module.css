@@ -1,0 +1,74 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 14px 14px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tabButton {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-muted);
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.tabButtonActive {
+  font-weight: 700;
+  color: #fff;
+}
+
+.swipeContainer {
+  overflow-x: clip;
+  touch-action: pan-y;
+}
+
+.swipeStrip {
+  display: flex;
+  direction: ltr;
+}
+
+.swipePanel {
+  width: 100vw;
+  flex-shrink: 0;
+}
+
+.contentArea {
+  padding: 16px 14px;
+  padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 88px));
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.searchResults {
+  padding: 16px 16px;
+  padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 88px));
+}
+
+.searchCount {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.resultList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

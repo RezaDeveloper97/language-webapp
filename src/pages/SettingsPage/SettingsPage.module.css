@@ -1,0 +1,58 @@
+.container {
+  padding: 24px 16px;
+  padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 88px));
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.section {
+  margin-top: 32px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.row + .row {
+  border-top: 1px solid var(--border-card);
+}
+
+.rowLabel {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.rowValue {
+  font-size: 13px;
+  color: var(--text-muted);
+}
