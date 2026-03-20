@@ -1,0 +1,23 @@
+{
+  "settings.title": "Settings",
+  "settings.subtitle": "Manage app settings from here",
+  "settings.appearance": "Appearance",
+  "settings.fontSize": "Font Size",
+  "settings.fontSize.small": "Small",
+  "settings.fontSize.medium": "Medium",
+  "settings.fontSize.large": "Large",
+  "settings.themeColor": "Theme Color",
+  "settings.learning": "Learning",
+  "settings.cardOrder": "Card Order",
+  "settings.cardOrder.sourceFirst": "Persian First",
+  "settings.cardOrder.targetFirst": "English First",
+  "settings.general": "General",
+  "settings.version": "Version",
+  "settings.uiLanguage": "UI Language",
+  "home.searchResults": "{count} results found",
+  "search.placeholder": "Search...",
+  "pairPicker.title": "Select Language",
+  "flipCard.pronunciation": "Pronunciation: ",
+  "offline.message": "You are offline — data loaded from cache",
+  "loading.text": "Loading..."
+}

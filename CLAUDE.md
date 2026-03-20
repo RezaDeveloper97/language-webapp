@@ -53,6 +53,14 @@ src/
 - Lazy-load language pairs via dynamic `import()`
 - Cache loaded data in refs to avoid re-fetching
 
+### 8. Internationalization (i18n)
+- **NEVER** hardcode UI text in components — all user-facing strings must use `t()` from `useTranslation` hook
+- Translation files live in `src/data/locales/{locale}.json` (e.g., `fa.json`, `en.json`)
+- Use flat dot-namespaced keys — e.g., `"settings.title"`, `"home.searchResults"`
+- For dynamic values use interpolation: `t("home.searchResults", { count: 5 })`
+- To add a new locale: create `{locale}.json`, add to `src/data/locales/supported.js`, add loader in `I18nProvider.jsx`
+- Default locale is `fa` (Persian) — stored in localStorage via `SettingsProvider`
+
 ## Commands
 ```bash
 npm run dev      # Start dev server
