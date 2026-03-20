@@ -14,19 +14,27 @@
  */
 
 import faEnMeta from './pairs/fa-en/meta.json';
-// import faHiMeta from './pairs/fa-hi/meta.json';
-// import enFaMeta from './pairs/en-fa/meta.json';
+import faZhMeta from './pairs/fa-zh/meta.json';
+import faMsMeta from './pairs/fa-ms/meta.json';
+import faThMeta from './pairs/fa-th/meta.json';
 
 export const pairManifest = [
   {
     meta: faEnMeta,
-    // Dynamic import → Vite bundles this pair into its own chunk
     load: () => import('./pairs/fa-en/index.js'),
   },
-  // {
-  //   meta: faHiMeta,
-  //   load: () => import('./pairs/fa-hi/index.js'),
-  // },
+  {
+    meta: faZhMeta,
+    load: () => import('./pairs/fa-zh/index.js'),
+  },
+  {
+    meta: faMsMeta,
+    load: () => import('./pairs/fa-ms/index.js'),
+  },
+  {
+    meta: faThMeta,
+    load: () => import('./pairs/fa-th/index.js'),
+  },
 ];
 
 export const defaultPairId = 'fa-en';

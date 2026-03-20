@@ -1,0 +1,53 @@
+{
+  "id": "restaurant",
+  "icon": "🍜",
+  "color": "#ef4444",
+  "tip": true,
+  "phrases": [
+    {
+      "pronounce": "بولِه سایا لیهات مِنو؟",
+      "source": "منو لطفاً",
+      "target": "Boleh saya lihat menu?"
+    },
+    {
+      "pronounce": "آندا سیورکان اینی؟",
+      "source": "اینو توصیه میکنی؟",
+      "target": "Anda syorkan ini?"
+    },
+    {
+      "pronounce": "جانگان پِداس",
+      "source": "تند نباشه",
+      "target": "Jangan pedas"
+    },
+    {
+      "pronounce": "تانپا دگینگ بابی",
+      "source": "بدون گوشت خوک",
+      "target": "Tanpa daging babi"
+    },
+    {
+      "pronounce": "اینی حلال کِه؟",
+      "source": "حلاله؟",
+      "target": "Ini halal ke?"
+    },
+    {
+      "pronounce": "ایر کوسونگ",
+      "source": "آب ساده لطفاً",
+      "target": "Air kosong"
+    },
+    {
+      "pronounce": "بیل",
+      "source": "فاکتور لطفاً",
+      "target": "Bil"
+    },
+    {
+      "pronounce": "بایار آسینگ‌آسینگ",
+      "source": "جدا جدا حساب",
+      "target": "Bayar asing-asing"
+    },
+    {
+      "pronounce": "سِدَپ!",
+      "source": "خیلی خوشمزه بود!",
+      "target": "Sedap!"
+    }
+  ]
+}

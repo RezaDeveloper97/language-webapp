@@ -1,0 +1,13 @@
+{
+  "id": "fa-th",
+  "sourceLang": {
+    "code": "fa",
+    "name": "فارسی",
+    "flag": "🇮🇷"
+  },
+  "targetLang": {
+    "code": "th",
+    "name": "ภาษาไทย",
+    "flag": "🇹🇭"
+  }
+}

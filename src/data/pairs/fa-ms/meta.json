@@ -1,0 +1,13 @@
+{
+  "id": "fa-ms",
+  "sourceLang": {
+    "code": "fa",
+    "name": "فارسی",
+    "flag": "🇮🇷"
+  },
+  "targetLang": {
+    "code": "ms",
+    "name": "Bahasa Melayu",
+    "flag": "🇲🇾"
+  }
+}

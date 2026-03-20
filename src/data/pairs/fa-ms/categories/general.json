@@ -1,0 +1,73 @@
+{
+  "id": "general",
+  "icon": "🗣️",
+  "color": "#0ea5e9",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "سِلامات!",
+      "source": "سلام",
+      "target": "Selamat!"
+    },
+    {
+      "pronounce": "سِلامات تینگال!",
+      "source": "خداحافظ",
+      "target": "Selamat tinggal!"
+    },
+    {
+      "pronounce": "تِریما کاسیه",
+      "source": "ممنون",
+      "target": "Terima kasih"
+    },
+    {
+      "pronounce": "ساما ساما",
+      "source": "خواهش میکنم",
+      "target": "Sama-sama"
+    },
+    {
+      "pronounce": "ماعاف",
+      "source": "ببخشید",
+      "target": "Maaf"
+    },
+    {
+      "pronounce": "سایا تیداک فاهام",
+      "source": "متوجه نشدم",
+      "target": "Saya tidak faham"
+    },
+    {
+      "pronounce": "تولونگ چاکاپ پِرلاهان",
+      "source": "آروم‌تر بگو لطفاً",
+      "target": "Tolong cakap perlahan"
+    },
+    {
+      "pronounce": "تولونگ اولانگ",
+      "source": "دوباره بگو",
+      "target": "Tolong ulang"
+    },
+    {
+      "pronounce": "باهاسا مِلایو سایا تیداک باگوس",
+      "source": "مالزیاییم ضعیفه",
+      "target": "Bahasa Melayu saya tidak bagus"
+    },
+    {
+      "pronounce": "آپا خابار؟",
+      "source": "چطوری؟",
+      "target": "Apa khabar?"
+    },
+    {
+      "pronounce": "خابار بایک، تِریما کاسیه",
+      "source": "خوبم، ممنون",
+      "target": "Khabar baik, terima kasih"
+    },
+    {
+      "pronounce": "سیاپا نامای آندا؟",
+      "source": "اسمت چیه؟",
+      "target": "Siapa nama anda?"
+    },
+    {
+      "pronounce": "نامای سایا …",
+      "source": "اسمم … هست",
+      "target": "Nama saya …"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "taxi",
+  "icon": "🚕",
+  "color": "#10b981",
+  "tip": true,
+  "phrases": [
+    {
+      "pronounce": "بولِه هانتار سایا کِه آلامات اینی؟",
+      "source": "به این آدرس میری؟",
+      "target": "Boleh hantar saya ke alamat ini?"
+    },
+    {
+      "pronounce": "گونا میتِر کِه؟",
+      "source": "کنتور داری؟",
+      "target": "Guna meter ke?"
+    },
+    {
+      "pronounce": "بِراپا کِه …؟",
+      "source": "چقدر میشه تا…؟",
+      "target": "Berapa ke …?"
+    },
+    {
+      "pronounce": "تولونگ بِرهِنتی سینی",
+      "source": "اینجا پیاده میشم",
+      "target": "Tolong berhenti sini"
+    },
+    {
+      "pronounce": "لاجو سیکیت",
+      "source": "سریع‌تر لطفاً",
+      "target": "Laju sikit"
+    },
+    {
+      "pronounce": "پِرلاهان سیکیت",
+      "source": "آروم‌تر لطفاً",
+      "target": "Perlahan sikit"
+    },
+    {
+      "pronounce": "تولونگ تونگو سایا",
+      "source": "منتظرم بمون",
+      "target": "Tolong tunggu saya"
+    },
+    {
+      "pronounce": "آگاک پاناس",
+      "source": "یه کم گرمه",
+      "target": "Agak panas"
+    }
+  ]
+}

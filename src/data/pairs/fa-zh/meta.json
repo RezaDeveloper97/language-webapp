@@ -1,0 +1,13 @@
+{
+  "id": "fa-zh",
+  "sourceLang": {
+    "code": "fa",
+    "name": "فارسی",
+    "flag": "🇮🇷"
+  },
+  "targetLang": {
+    "code": "zh",
+    "name": "中文",
+    "flag": "🇨🇳"
+  }
+}

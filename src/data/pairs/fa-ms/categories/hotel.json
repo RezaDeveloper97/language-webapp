@@ -1,0 +1,58 @@
+{
+  "id": "hotel",
+  "icon": "🏨",
+  "color": "#6366f1",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "سایا آدا تِمپاهان",
+      "source": "رزرو دارم",
+      "target": "Saya ada tempahan"
+    },
+    {
+      "pronounce": "آدا بیلیک کوسونگ؟",
+      "source": "اتاق داری؟",
+      "target": "Ada bilik kosong?"
+    },
+    {
+      "pronounce": "بیلیک سِئورانگ",
+      "source": "اتاق یه نفره",
+      "target": "Bilik seorang"
+    },
+    {
+      "pronounce": "بیلیک دوا اورانگ",
+      "source": "اتاق دو نفره",
+      "target": "Bilik dua orang"
+    },
+    {
+      "pronounce": "ترماسوک ساراپان؟",
+      "source": "صبحانه داره؟",
+      "target": "Termasuk sarapan?"
+    },
+    {
+      "pronounce": "پوکول بِراپا دافتار ماسوک؟",
+      "source": "چک‌این چه ساعتیه؟",
+      "target": "Pukul berapa daftar masuk?"
+    },
+    {
+      "pronounce": "بولِه دافتار ماسوک آوال؟",
+      "source": "زود چک‌این میشه؟",
+      "target": "Boleh daftar masuk awal?"
+    },
+    {
+      "pronounce": "آپا کاتا لالوان وای‌فای؟",
+      "source": "رمز وای‌فای چیه؟",
+      "target": "Apa kata laluan WiFi?"
+    },
+    {
+      "pronounce": "سایا تِرکونچی دی لوار",
+      "source": "کلیدم توی اتاق جا موند",
+      "target": "Saya terkunci di luar"
+    },
+    {
+      "pronounce": "تولونگ بِرسیهکان بیلیک سایا",
+      "source": "اتاقم رو تمیز کنین",
+      "target": "Tolong bersihkan bilik saya"
+    }
+  ]
+}
