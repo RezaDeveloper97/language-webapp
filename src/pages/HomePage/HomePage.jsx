@@ -73,7 +73,7 @@ export function HomePage() {
               key={i}
               p={p}
               color={p.catColor}
-              label={`${p.catIcon} ${p.catTitle}`}
+              label={`${p.catIcon} ${t(`category.${p.catId}.title`)}`}
               onNavigate={() => goToPhrase(p.catId, p.phraseIndex)}
             />
           ))}
@@ -95,7 +95,7 @@ export function HomePage() {
             className={`${styles.tabButton} ${activeCatId === cat.id ? styles.tabButtonActive : ""}`}
             style={activeCatId === cat.id ? { background: cat.color } : undefined}
           >
-            {cat.icon} {cat.title}
+            {cat.icon} {t(`category.${cat.id}.title`)}
           </button>
         ))}
       </div>
@@ -139,7 +139,7 @@ export function HomePage() {
                     ))}
                   </div>
                 </div>
-                {current.tip && <TipBox color={current.color} text={current.tip} />}
+                {current.tip && <TipBox color={current.color} text={t(`category.${current.id}.tip`)} />}
               </>
             )}
           </div>
