@@ -1,8 +1,14 @@
 import { forwardRef } from "react";
 import { Check, Eye } from "lucide-react";
+import { useSettings } from "../../../app/providers/SettingsProvider.jsx";
 import styles from "./FlipCard.module.css";
 
 export const FlipCard = forwardRef(function FlipCard({ p, color, isFlipped, onToggle }, ref) {
+  const { settings } = useSettings();
+  const isTargetFirst = settings.cardOrder === "target-first";
+  const primary = isTargetFirst ? p.target : p.source;
+  const secondary = isTargetFirst ? p.source : p.target;
+
   return (
     <div
       ref={ref}
@@ -12,9 +18,9 @@ export const FlipCard = forwardRef(function FlipCard({ p, color, isFlipped, onTo
     >
       <div className={styles.content}>
         <div className={styles.textBlock}>
-          <div className={styles.source}>{p.source}</div>
+          <div className={styles.source}>{primary}</div>
           <div className={`${styles.target} ${isFlipped ? styles.targetVisible : ""}`}>
-            {p.target}
+            {secondary}
           </div>
           {isFlipped && (
             <div className={styles.pronounceBox}>
