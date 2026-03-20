@@ -73,6 +73,12 @@ src/
 4. Add `"lang.{code}"` translation keys for any new language codes to **all** locale files
 5. Pair names and descriptions are **never** hardcoded — they are built dynamically via `t("pairPicker.pairName", { source, target })` and `t("app.description")`
 
+#### Categories
+- Categories are **shared across all language pairs** — their titles and tips are UI-locale-dependent
+- **NEVER** hardcode category titles or tips in JSON data files — always use `t("category.{id}.title")` and `t("category.{id}.tip")`
+- Each category JSON only stores `id`, `icon`, `color`, `tip` (as a boolean-like flag), and `phrases`
+- When adding a new category, add `"category.{id}.title"` (and optionally `"category.{id}.tip"`) to **all** locale files
+
 #### Direction (RTL / LTR)
 - Each locale in `supported.js` has a `dir` field (`"rtl"` or `"ltr"`)
 - `I18nProvider` syncs `document.documentElement.dir` and `lang` on locale change
