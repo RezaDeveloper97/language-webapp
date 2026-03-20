@@ -1,35 +1,38 @@
 import { useSettings } from "../../app/providers/SettingsProvider.jsx";
+import { useTranslation } from "../../shared/hooks/useTranslation.js";
+import { SUPPORTED_LOCALES } from "../../data/locales/supported.js";
 import { Check } from "lucide-react";
 import styles from "./SettingsPage.module.css";
 
-const FONT_LABELS = {
-  small: "کوچک",
-  medium: "معمولی",
-  large: "بزرگ",
-};
-
-const CARD_ORDER_OPTIONS = [
-  { value: "source-first", label: "فارسی اول" },
-  { value: "target-first", label: "انگلیسی اول" },
-];
-
 export function SettingsPage() {
   const { settings, updateSetting, ACCENT_PRESETS } = useSettings();
+  const { t } = useTranslation();
+
+  const fontLabels = {
+    small: t("settings.fontSize.small"),
+    medium: t("settings.fontSize.medium"),
+    large: t("settings.fontSize.large"),
+  };
+
+  const cardOrderOptions = [
+    { value: "source-first", label: t("settings.cardOrder.sourceFirst") },
+    { value: "target-first", label: t("settings.cardOrder.targetFirst") },
+  ];
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>تنظیمات</h1>
-      <p className={styles.subtitle}>تنظیمات برنامه را از اینجا مدیریت کنید</p>
+      <h1 className={styles.title}>{t("settings.title")}</h1>
+      <p className={styles.subtitle}>{t("settings.subtitle")}</p>
 
       {/* Appearance */}
       <div className={styles.section}>
-        <p className={styles.sectionTitle}>ظاهر</p>
+        <p className={styles.sectionTitle}>{t("settings.appearance")}</p>
 
         <div className={styles.card}>
           <div className={styles.row}>
-            <span className={styles.rowLabel}>اندازه فونت</span>
+            <span className={styles.rowLabel}>{t("settings.fontSize")}</span>
             <div className={styles.fontSizes}>
-              {Object.entries(FONT_LABELS).map(([key, label]) => (
+              {Object.entries(fontLabels).map(([key, label]) => (
                 <button
                   key={key}
                   className={`${styles.fontBtn} ${settings.fontSize === key ? styles.fontBtnActive : ""}`}
@@ -42,7 +45,7 @@ export function SettingsPage() {
           </div>
 
           <div className={styles.row}>
-            <span className={styles.rowLabel}>رنگ تم</span>
+            <span className={styles.rowLabel}>{t("settings.themeColor")}</span>
             <div className={styles.colorPicker}>
               {ACCENT_PRESETS.map((preset) => (
                 <button
@@ -62,13 +65,13 @@ export function SettingsPage() {
 
       {/* Learning */}
       <div className={styles.section}>
-        <p className={styles.sectionTitle}>یادگیری</p>
+        <p className={styles.sectionTitle}>{t("settings.learning")}</p>
 
         <div className={styles.card}>
           <div className={styles.row}>
-            <span className={styles.rowLabel}>ترتیب نمایش کارت</span>
+            <span className={styles.rowLabel}>{t("settings.cardOrder")}</span>
             <div className={styles.toggleGroup}>
-              {CARD_ORDER_OPTIONS.map((opt) => (
+              {cardOrderOptions.map((opt) => (
                 <button
                   key={opt.value}
                   className={`${styles.toggleBtn} ${settings.cardOrder === opt.value ? styles.toggleBtnActive : ""}`}
@@ -84,15 +87,23 @@ export function SettingsPage() {
 
       {/* General */}
       <div className={styles.section}>
-        <p className={styles.sectionTitle}>عمومی</p>
+        <p className={styles.sectionTitle}>{t("settings.general")}</p>
         <div className={styles.card}>
           <div className={styles.row}>
-            <span className={styles.rowLabel}>نسخه</span>
+            <span className={styles.rowLabel}>{t("settings.version")}</span>
             <span className={styles.rowValue}>1.0.0</span>
           </div>
           <div className={styles.row}>
-            <span className={styles.rowLabel}>زبان رابط کاربری</span>
-            <span className={styles.rowValue}>فارسی</span>
+            <span className={styles.rowLabel}>{t("settings.uiLanguage")}</span>
+            <select
+              value={settings.locale}
+              onChange={(e) => updateSetting("locale", e.target.value)}
+              className={styles.select}
+            >
+              {SUPPORTED_LOCALES.map((loc) => (
+                <option key={loc.id} value={loc.id}>{loc.label}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

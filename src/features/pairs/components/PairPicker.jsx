@@ -1,14 +1,16 @@
 import { ArrowRight, Check } from "lucide-react";
+import { useTranslation } from "../../../shared/hooks/useTranslation.js";
 import styles from "./PairPicker.module.css";
 
 export function PairPicker({ manifest, activePairId, onSelect, onClose }) {
+  const { t } = useTranslation();
   return (
     <>
       <div className={styles.backdrop} onClick={onClose} />
 
       <div className={styles.sheet}>
         <div className={styles.handle} />
-        <p className={styles.title}>انتخاب زبان</p>
+        <p className={styles.title}>{t("pairPicker.title")}</p>
 
         <div className={styles.list}>
           {manifest.map(({ meta }) => {
