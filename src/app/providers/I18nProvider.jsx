@@ -5,6 +5,7 @@ import faMessages from "../../data/locales/fa.json";
 
 const LOCALE_LOADERS = {
   fa: () => faMessages,
+  en: () => import("../../data/locales/en.json"),
 };
 
 export function I18nProvider({ children }) {
