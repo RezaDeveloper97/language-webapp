@@ -22,6 +22,7 @@ const DEFAULT_SETTINGS = {
   fontSize: "medium",
   accentId: "indigo",
   cardOrder: "source-first",
+  locale: "fa",
 };
 
 function loadSettings() {

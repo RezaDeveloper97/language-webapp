@@ -1,0 +1,23 @@
+{
+  "settings.title": "تنظیمات",
+  "settings.subtitle": "تنظیمات برنامه را از اینجا مدیریت کنید",
+  "settings.appearance": "ظاهر",
+  "settings.fontSize": "اندازه فونت",
+  "settings.fontSize.small": "کوچک",
+  "settings.fontSize.medium": "معمولی",
+  "settings.fontSize.large": "بزرگ",
+  "settings.themeColor": "رنگ تم",
+  "settings.learning": "یادگیری",
+  "settings.cardOrder": "ترتیب نمایش کارت",
+  "settings.cardOrder.sourceFirst": "فارسی اول",
+  "settings.cardOrder.targetFirst": "انگلیسی اول",
+  "settings.general": "عمومی",
+  "settings.version": "نسخه",
+  "settings.uiLanguage": "زبان رابط کاربری",
+  "home.searchResults": "{count} نتیجه پیدا شد",
+  "search.placeholder": "جستجو...",
+  "pairPicker.title": "انتخاب زبان",
+  "flipCard.pronunciation": "تلفظ: ",
+  "offline.message": "آفلاین هستید — اطلاعات از حافظه بارگذاری شد",
+  "loading.text": "در حال بارگذاری..."
+}

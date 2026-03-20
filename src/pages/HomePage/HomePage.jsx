@@ -5,6 +5,7 @@ import { CategoryPanel } from "../../features/phrases/components/CategoryPanel.j
 import { PhraseRow } from "../../features/phrases/components/PhraseRow.jsx";
 import { TipBox } from "../../features/phrases/components/TipBox.jsx";
 import { useSwipe } from "../../features/phrases/hooks/useSwipe.js";
+import { useTranslation } from "../../shared/hooks/useTranslation.js";
 import styles from "./HomePage.module.css";
 
 export function HomePage() {
@@ -14,6 +15,7 @@ export function HomePage() {
     flipped, setFlipped,
     closeSearch,
   } = useOutletContext();
+  const { t } = useTranslation();
 
   const tabBtnRefs = useRef({});
   const phraseRefs = useRef({});
@@ -63,7 +65,7 @@ export function HomePage() {
     return (
       <div className={styles.searchResults}>
         <p className={styles.searchCount}>
-          {filtered.length} نتیجه پیدا شد
+          {t("home.searchResults", { count: filtered.length })}
         </p>
         <div className={styles.resultList}>
           {filtered.map((p, i) => (
