@@ -23,6 +23,7 @@ const DEFAULT_SETTINGS = {
   accentId: "indigo",
   cardOrder: "source-first",
   locale: "fa",
+  activePairId: "fa-en",
 };
 
 function loadSettings() {
