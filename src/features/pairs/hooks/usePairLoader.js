@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { pairManifest, defaultPairId } from "../../../data/index.js";
+import { pairManifest } from "../../../data/index.js";
+import { useSettings } from "../../../app/providers/SettingsProvider.jsx";
 
 export function usePairLoader() {
-  const [activePairId, setActivePairId] = useState(defaultPairId);
+  const { settings, updateSetting } = useSettings();
+  const activePairId = settings.activePairId;
   const [pairData, setPairData] = useState(null);
   const [loading, setLoading] = useState(true);
   const cache = useRef({});
@@ -24,9 +26,9 @@ export function usePairLoader() {
 
   const switchPair = useCallback((id) => {
     if (id === activePairId) return false;
-    setActivePairId(id);
+    updateSetting("activePairId", id);
     return true;
-  }, [activePairId]);
+  }, [activePairId, updateSetting]);
 
   return {
     activePairId,
