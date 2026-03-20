@@ -19,5 +19,7 @@
   "pairPicker.title": "Select Language",
   "flipCard.pronunciation": "Pronunciation: ",
   "offline.message": "You are offline — data loaded from cache",
-  "loading.text": "Loading..."
+  "loading.text": "Loading...",
+  "app.name": "My Language",
+  "app.description": "Learn useful language phrases"
 }

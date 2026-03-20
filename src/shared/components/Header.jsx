@@ -1,10 +1,12 @@
 import { ArrowLeftRight, ChevronDown } from "lucide-react";
+import { useTranslation } from "../hooks/useTranslation.js";
 import styles from "./Header.module.css";
 
 export function Header({ meta, online, onOpenPicker }) {
+  const { t } = useTranslation();
   return (
     <div className={`${styles.header} ${online ? styles.headerOnline : styles.headerOffline}`}>
-      <p className={styles.description}>{meta.description}</p>
+      <p className={styles.description}>{t("app.description")}</p>
 
       <button className={styles.pairButton} onClick={onOpenPicker}>
         <span className={styles.flag}>{meta.sourceLang.flag}</span>
