@@ -1,0 +1,73 @@
+{
+  "id": "general",
+  "icon": "🗣️",
+  "color": "#0ea5e9",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "نی هاو!",
+      "source": "سلام",
+      "target": "你好！"
+    },
+    {
+      "pronounce": "زای جی‌ین!",
+      "source": "خداحافظ",
+      "target": "再见！"
+    },
+    {
+      "pronounce": "شیه شیه",
+      "source": "ممنون",
+      "target": "谢谢"
+    },
+    {
+      "pronounce": "بو کِه‌چی",
+      "source": "خواهش میکنم",
+      "target": "不客气"
+    },
+    {
+      "pronounce": "دوئی بو چی",
+      "source": "ببخشید",
+      "target": "对不起"
+    },
+    {
+      "pronounce": "وو تینگ بو دُنگ",
+      "source": "متوجه نشدم",
+      "target": "我听不懂"
+    },
+    {
+      "pronounce": "چینگ شوا مان ای‌دی‌ین",
+      "source": "آروم‌تر بگو لطفاً",
+      "target": "请说慢一点"
+    },
+    {
+      "pronounce": "چینگ زای شوا ای بی‌ین",
+      "source": "دوباره بگو",
+      "target": "请再说一遍"
+    },
+    {
+      "pronounce": "وو دِه جُنگ وِن بو تای هاو",
+      "source": "چینیم ضعیفه",
+      "target": "我的中文不太好"
+    },
+    {
+      "pronounce": "نی هاو ما؟",
+      "source": "چطوری؟",
+      "target": "你好吗？"
+    },
+    {
+      "pronounce": "وو هِن هاو، شیه شیه",
+      "source": "خوبم، ممنون",
+      "target": "我很好，谢谢"
+    },
+    {
+      "pronounce": "نی جی‌یائو شِن‌مِه؟",
+      "source": "اسمت چیه؟",
+      "target": "你叫什么？"
+    },
+    {
+      "pronounce": "وو جی‌یائو …",
+      "source": "اسمم … هست",
+      "target": "我叫 …"
+    }
+  ]
+}

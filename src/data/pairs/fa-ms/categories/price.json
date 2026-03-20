@@ -1,0 +1,38 @@
+{
+  "id": "price",
+  "icon": "💰",
+  "color": "#f59e0b",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "اینی بِراپا؟",
+      "source": "این چنده؟",
+      "target": "Ini berapa?"
+    },
+    {
+      "pronounce": "ماهال سانگات",
+      "source": "خیلی گرونه",
+      "target": "Mahal sangat"
+    },
+    {
+      "pronounce": "بولِه کوران؟",
+      "source": "تخفیف میدی؟",
+      "target": "Boleh kurang?"
+    },
+    {
+      "pronounce": "هارگا تِراخیر؟",
+      "source": "قیمت نهاییته؟",
+      "target": "Harga terakhir?"
+    },
+    {
+      "pronounce": "اوکِی، سایا آمبیل",
+      "source": "قبوله، میگیرمش",
+      "target": "Okay, saya ambil"
+    },
+    {
+      "pronounce": "تاک ناک، تِریما کاسیه",
+      "source": "نه ممنون",
+      "target": "Tak nak, terima kasih"
+    }
+  ]
+}

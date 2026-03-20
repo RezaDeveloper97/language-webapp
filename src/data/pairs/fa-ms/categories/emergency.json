@@ -1,0 +1,48 @@
+{
+  "id": "emergency",
+  "icon": "🚨",
+  "color": "#dc2626",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "تولونگ!",
+      "source": "کمک!",
+      "target": "Tolong!"
+    },
+    {
+      "pronounce": "پانگیل اَمبولِنس!",
+      "source": "با اورژانس تماس بگیر",
+      "target": "Panggil ambulans!"
+    },
+    {
+      "pronounce": "پانگیل پولیس!",
+      "source": "پلیس بخواه",
+      "target": "Panggil polis!"
+    },
+    {
+      "pronounce": "سایا سِسات",
+      "source": "گم شدم",
+      "target": "Saya sesat"
+    },
+    {
+      "pronounce": "بِگ سایا دیچوری",
+      "source": "کیفم دزدیده شد",
+      "target": "Beg saya dicuri"
+    },
+    {
+      "pronounce": "سایا تیداک سیهات",
+      "source": "حالم خوب نیست",
+      "target": "Saya tidak sihat"
+    },
+    {
+      "pronounce": "هاسپیتال دی مانا؟",
+      "source": "بیمارستان کجاست؟",
+      "target": "Hospital di mana?"
+    },
+    {
+      "pronounce": "فارماسی دی مانا؟",
+      "source": "داروخانه کجاست؟",
+      "target": "Farmasi di mana?"
+    }
+  ]
+}

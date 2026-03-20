@@ -1,0 +1,38 @@
+{
+  "id": "shopping",
+  "icon": "🛍️",
+  "color": "#ec4899",
+  "tip": null,
+  "phrases": [
+    {
+      "pronounce": "سایا تِنگوک ساجا",
+      "source": "فقط نگاه میکنم",
+      "target": "Saya tengok saja"
+    },
+    {
+      "pronounce": "آدا سایز سایا؟",
+      "source": "سایز داری؟",
+      "target": "Ada saiz saya?"
+    },
+    {
+      "pronounce": "بیلیک توکار دی مانا؟",
+      "source": "اتاق پرو کجاست؟",
+      "target": "Bilik tukar di mana?"
+    },
+    {
+      "pronounce": "آدا وارنا لاین؟",
+      "source": "رنگ دیگه داری؟",
+      "target": "Ada warna lain?"
+    },
+    {
+      "pronounce": "سایا ناک پولانگکان اینی",
+      "source": "این رو برمیگردونم",
+      "target": "Saya nak pulangkan ini"
+    },
+    {
+      "pronounce": "آدا بِگ؟",
+      "source": "کیسه داری؟",
+      "target": "Ada beg?"
+    }
+  ]
+}
