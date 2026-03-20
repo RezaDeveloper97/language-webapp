@@ -29,7 +29,7 @@ export function PairPicker({ manifest, activePairId, onSelect, onClose }) {
                   <div className={`${styles.name} ${isActive ? styles.nameActive : ""}`}>
                     {meta.name}
                   </div>
-                  <div className={styles.desc}>{meta.description}</div>
+                  <div className={styles.desc}>{t("app.description")}</div>
                 </div>
 
                 {isActive && (
