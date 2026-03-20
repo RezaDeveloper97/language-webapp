@@ -33,7 +33,7 @@
   height: 48px;
   border-radius: var(--radius-circle);
   border: 1px solid var(--border-glass);
-  background: var(--bg-glass-strong);
+  background: var(--accent-primary);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), var(--shadow-glass-inset);

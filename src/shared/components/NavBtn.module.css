@@ -10,5 +10,5 @@
 }
 
 .active {
-  color: #fff;
+  color: var(--accent-light);
 }

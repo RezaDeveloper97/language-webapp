@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from "rea
 const STORAGE_KEY = "app-settings";
 
 const ACCENT_PRESETS = [
+  { id: "dark", primary: "#64748b", light: "#94a3b8" },
   { id: "indigo", primary: "#6366f1", light: "#a5b4fc" },
   { id: "blue", primary: "#3b82f6", light: "#93c5fd" },
   { id: "emerald", primary: "#10b981", light: "#6ee7b7" },
