@@ -56,6 +56,9 @@
 
   /* Font */
   --font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+  --font-size-base: 15px;
+  --font-size-card: 16px;
+  --font-size-heading: 22px;
 
   /* Offline banner */
   --offline-bg: linear-gradient(90deg, #dc2626, #b91c1c);
