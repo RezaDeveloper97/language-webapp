@@ -9,17 +9,20 @@
   "settings.themeColor": "Theme Color",
   "settings.learning": "Learning",
   "settings.cardOrder": "Card Order",
-  "settings.cardOrder.sourceFirst": "Persian First",
-  "settings.cardOrder.targetFirst": "English First",
+  "settings.cardOrder.sourceFirst": "{lang} First",
+  "settings.cardOrder.targetFirst": "{lang} First",
   "settings.general": "General",
   "settings.version": "Version",
   "settings.uiLanguage": "UI Language",
   "home.searchResults": "{count} results found",
   "search.placeholder": "Search...",
   "pairPicker.title": "Select Language",
+  "pairPicker.pairName": "{source} → {target}",
   "flipCard.pronunciation": "Pronunciation: ",
   "offline.message": "You are offline — data loaded from cache",
   "loading.text": "Loading...",
   "app.name": "My Language",
-  "app.description": "Learn useful language phrases"
+  "app.description": "Learn useful language phrases",
+  "lang.fa": "Persian",
+  "lang.en": "English"
 }

@@ -58,8 +58,26 @@ src/
 - Translation files live in `src/data/locales/{locale}.json` (e.g., `fa.json`, `en.json`)
 - Use flat dot-namespaced keys — e.g., `"settings.title"`, `"home.searchResults"`
 - For dynamic values use interpolation: `t("home.searchResults", { count: 5 })`
-- To add a new locale: create `{locale}.json`, add to `src/data/locales/supported.js`, add loader in `I18nProvider.jsx`
 - Default locale is `fa` (Persian) — stored in localStorage via `SettingsProvider`
+
+#### Adding a new UI locale
+1. Create `src/data/locales/{locale}.json` — copy all keys from `fa.json` and translate
+2. Add entry to `src/data/locales/supported.js` with `id`, `label`, and `dir` (`"rtl"` or `"ltr"`)
+3. Add lazy loader in `I18nProvider.jsx` → `LOCALE_LOADERS` object: `{locale}: () => import("../../data/locales/{locale}.json")`
+4. Add `"lang.{locale}"` key to **every** existing locale file (so all locales can display the new language name)
+
+#### Adding a new language pair
+1. Create folder `src/data/pairs/{source}-{target}/` with `meta.json` and `phrases.json`
+2. `meta.json` must include: `id`, `sourceLang` (`code`, `name`, `flag`), `targetLang` (`code`, `name`, `flag`)
+3. Add the pair to `src/data/pairs/manifest.js`
+4. Add `"lang.{code}"` translation keys for any new language codes to **all** locale files
+5. Pair names and descriptions are **never** hardcoded — they are built dynamically via `t("pairPicker.pairName", { source, target })` and `t("app.description")`
+
+#### Direction (RTL / LTR)
+- Each locale in `supported.js` has a `dir` field (`"rtl"` or `"ltr"`)
+- `I18nProvider` syncs `document.documentElement.dir` and `lang` on locale change
+- Components read direction via `const { dir } = useTranslation()`
+- **NEVER** hardcode `direction` or read it from pair `meta.json` — always derive from the active UI locale
 
 ## Commands
 ```bash

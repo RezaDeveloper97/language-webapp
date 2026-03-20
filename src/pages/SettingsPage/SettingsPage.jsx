@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import { useSettings } from "../../app/providers/SettingsProvider.jsx";
 import { useTranslation } from "../../shared/hooks/useTranslation.js";
 import { SUPPORTED_LOCALES } from "../../data/locales/supported.js";
@@ -5,6 +6,7 @@ import { Check } from "lucide-react";
 import styles from "./SettingsPage.module.css";
 
 export function SettingsPage() {
+  const { meta } = useOutletContext();
   const { settings, updateSetting, ACCENT_PRESETS } = useSettings();
   const { t } = useTranslation();
 
@@ -14,9 +16,12 @@ export function SettingsPage() {
     large: t("settings.fontSize.large"),
   };
 
+  const sourceName = t(`lang.${meta.sourceLang.code}`);
+  const targetName = t(`lang.${meta.targetLang.code}`);
+
   const cardOrderOptions = [
-    { value: "source-first", label: t("settings.cardOrder.sourceFirst") },
-    { value: "target-first", label: t("settings.cardOrder.targetFirst") },
+    { value: "source-first", label: t("settings.cardOrder.sourceFirst", { lang: sourceName }) },
+    { value: "target-first", label: t("settings.cardOrder.targetFirst", { lang: targetName }) },
   ];
 
   return (
