@@ -19,5 +19,7 @@
   "pairPicker.title": "انتخاب زبان",
   "flipCard.pronunciation": "تلفظ: ",
   "offline.message": "آفلاین هستید — اطلاعات از حافظه بارگذاری شد",
-  "loading.text": "در حال بارگذاری..."
+  "loading.text": "در حال بارگذاری...",
+  "app.name": "زبان من",
+  "app.description": "یادگیری عبارات کاربردی زبان"
 }
