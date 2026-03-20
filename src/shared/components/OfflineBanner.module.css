@@ -1,0 +1,21 @@
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-offline);
+  background: var(--offline-bg);
+  color: #fff;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  padding-top: max(8px, calc(env(safe-area-inset-top) + 4px));
+  letter-spacing: 0.3px;
+  box-shadow: var(--offline-shadow);
+}
+
+.icon {
+  vertical-align: middle;
+  margin-left: 6px;
+}

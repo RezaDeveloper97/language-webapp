@@ -1,0 +1,10 @@
+.panel {
+  padding: 16px 14px;
+  padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 88px));
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
