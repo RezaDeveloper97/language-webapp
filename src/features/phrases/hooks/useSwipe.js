@@ -2,16 +2,16 @@ import { useState, useRef, useCallback } from "react";
 
 const SWIPE_THRESHOLD = 50;
 
-export function useSwipe({ categories, activeCatIndex, uiDir, onChangeCategory }) {
+export function useSwipe({ categories, activeCatIndex, dir, onChangeCategory }) {
   const [swipeOffset, setSwipeOffset] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const touchRef = useRef({ startX: 0, startY: 0, locked: null });
 
-  const leftCat = uiDir === "rtl"
+  const leftCat = dir === "rtl"
     ? (activeCatIndex < categories.length - 1 ? categories[activeCatIndex + 1] : null)
     : (activeCatIndex > 0 ? categories[activeCatIndex - 1] : null);
 
-  const rightCat = uiDir === "rtl"
+  const rightCat = dir === "rtl"
     ? (activeCatIndex > 0 ? categories[activeCatIndex - 1] : null)
     : (activeCatIndex < categories.length - 1 ? categories[activeCatIndex + 1] : null);
 

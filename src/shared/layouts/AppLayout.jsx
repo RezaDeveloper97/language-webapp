@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useOnline } from "../hooks/useOnline.js";
+import { useTranslation } from "../hooks/useTranslation.js";
 import { OfflineBanner } from "../components/OfflineBanner.jsx";
 import { BottomNav } from "../components/BottomNav.jsx";
 import { Header } from "../components/Header.jsx";
@@ -13,10 +14,10 @@ import styles from "./AppLayout.module.css";
 
 export function AppLayout() {
   const online = useOnline();
+  const { dir } = useTranslation();
   const { activePairId, pairData, loading, switchPair, pairManifest } = usePairLoader();
   const meta = pairData?.meta;
   const categories = pairData?.categories ?? [];
-  const uiDir = meta?.uiDir ?? "rtl";
 
   const {
     search, setSearch, searchOpen, searchInputRef,
@@ -42,7 +43,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className={styles.layout} style={{ direction: uiDir }}>
+    <div className={styles.layout}>
       {!online && <OfflineBanner />}
 
       <Header meta={meta} online={online} onOpenPicker={() => setPickerOpen(true)} />
@@ -62,13 +63,12 @@ export function AppLayout() {
         searchOpen={searchOpen}
         searchInputRef={searchInputRef}
         onClose={closeSearch}
-        uiDir={uiDir}
         online={online}
       />
 
       <Outlet context={{
         categories,
-        uiDir,
+        dir,
         filtered,
         activeCategory,
         setActiveCategory,

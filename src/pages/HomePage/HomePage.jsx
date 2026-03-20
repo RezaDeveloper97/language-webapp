@@ -10,7 +10,7 @@ import styles from "./HomePage.module.css";
 
 export function HomePage() {
   const {
-    categories, uiDir, filtered,
+    categories, dir, filtered,
     activeCategory, setActiveCategory,
     flipped, setFlipped,
     closeSearch,
@@ -35,7 +35,7 @@ export function HomePage() {
   } = useSwipe({
     categories,
     activeCatIndex,
-    uiDir,
+    dir,
     onChangeCategory: handleChangeCategory,
   });
 
@@ -114,12 +114,12 @@ export function HomePage() {
           }}
         >
           {/* Left panel */}
-          <div className={styles.swipePanel} style={{ direction: uiDir }}>
+          <div className={styles.swipePanel} style={{ direction: dir }}>
             {leftCat && <CategoryPanel cat={leftCat} />}
           </div>
 
           {/* Current panel */}
-          <div className={styles.swipePanel} style={{ direction: uiDir }}>
+          <div className={styles.swipePanel} style={{ direction: dir }}>
             {current && (
               <>
                 <div className={styles.contentArea}>
@@ -145,7 +145,7 @@ export function HomePage() {
           </div>
 
           {/* Right panel */}
-          <div className={styles.swipePanel} style={{ direction: uiDir }}>
+          <div className={styles.swipePanel} style={{ direction: dir }}>
             {rightCat && <CategoryPanel cat={rightCat} />}
           </div>
         </div>
