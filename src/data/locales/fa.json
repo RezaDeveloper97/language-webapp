@@ -24,5 +24,16 @@
   "app.name": "زبان من",
   "app.description": "یادگیری عبارات کاربردی زبان",
   "lang.fa": "فارسی",
-  "lang.en": "انگلیسی"
+  "lang.en": "انگلیسی",
+  "category.general.title": "روزمره عمومی",
+  "category.restaurant.title": "رستوران",
+  "category.hotel.title": "هتل",
+  "category.taxi.title": "تاکسی / Grab",
+  "category.shopping.title": "خرید",
+  "category.emergency.title": "اورژانس و مهم",
+  "category.price.title": "قیمت و چانه‌زنی",
+  "category.manglish.title": "Manglish — لهجه مالزی",
+  "category.taxi.tip": "💡 توی مالزی Grab خیلی بهتر از تاکسیه — قیمت ثابت، بدون چانه‌زنی!",
+  "category.restaurant.tip": "💡 بیشتر رستوران‌ها حلاله ولی رستوران‌های چینی ممکنه نباشن. مطمئن شو!",
+  "category.manglish.tip": "💡 Manglish = ترکیب انگلیسی + مالایی + چینی. وقتی «lah» میشنوی، یعنی داری با یه مالزیایی واقعی صحبت میکنی 😄"
 }

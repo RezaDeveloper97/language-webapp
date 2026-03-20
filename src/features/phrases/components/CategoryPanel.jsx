@@ -1,8 +1,10 @@
+import { useTranslation } from "../../../shared/hooks/useTranslation.js";
 import { FlipCard } from "./FlipCard.jsx";
 import { TipBox } from "./TipBox.jsx";
 import styles from "./CategoryPanel.module.css";
 
 export function CategoryPanel({ cat }) {
+  const { t } = useTranslation();
   return (
     <>
       <div className={styles.panel}>
@@ -12,7 +14,7 @@ export function CategoryPanel({ cat }) {
           ))}
         </div>
       </div>
-      {cat.tip && <TipBox color={cat.color} text={cat.tip} />}
+      {cat.tip && <TipBox color={cat.color} text={t(`category.${cat.id}.tip`)} />}
     </>
   );
 }

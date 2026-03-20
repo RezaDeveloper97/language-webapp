@@ -24,5 +24,16 @@
   "app.name": "My Language",
   "app.description": "Learn useful language phrases",
   "lang.fa": "Persian",
-  "lang.en": "English"
+  "lang.en": "English",
+  "category.general.title": "General",
+  "category.restaurant.title": "Restaurant",
+  "category.hotel.title": "Hotel",
+  "category.taxi.title": "Taxi / Grab",
+  "category.shopping.title": "Shopping",
+  "category.emergency.title": "Emergency",
+  "category.price.title": "Price & Bargaining",
+  "category.manglish.title": "Manglish — Malaysian Slang",
+  "category.taxi.tip": "💡 In Malaysia, Grab is much better than taxis — fixed price, no bargaining!",
+  "category.restaurant.tip": "💡 Most restaurants are halal, but Chinese restaurants may not be. Make sure to check!",
+  "category.manglish.tip": "💡 Manglish = English + Malay + Chinese mix. When you hear \"lah\", you're talking to a real Malaysian 😄"
 }

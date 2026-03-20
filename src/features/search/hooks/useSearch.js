@@ -28,7 +28,6 @@ export function useSearch({ categories }) {
           .map(({ p, idx }) => ({
             ...p,
             catId: cat.id,
-            catTitle: cat.title,
             catColor: cat.color,
             catIcon: cat.icon,
             phraseIndex: idx,
